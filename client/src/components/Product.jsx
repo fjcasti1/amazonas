@@ -1,5 +1,5 @@
 import React from 'react';
-import Rating from './components/Rating';
+import Rating from './Rating';
 
 const Product = ({ product }) => {
   const { _id, name, image, price, rating, numReviews } = product;
