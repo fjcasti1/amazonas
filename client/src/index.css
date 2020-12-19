@@ -8,6 +8,7 @@ html {
   --dark-blue: #203040;
   --orange: #ff8000;
   --white: #ffffffff;
+  --dark-gray: #404040;
   --gray: #c0c0c0;
   --light-gray: #f8f8f8;
   --gold: #f0c040;
@@ -116,4 +117,7 @@ img.medium {
 .rating span {
   color: var(--gold);
   margin: 0.1rem;
+}
+.rating span:last-child {
+  color: var(--dark-gray);
 }
