@@ -1,0 +1,31 @@
+{
+  "name": "amazonas",
+  "version": "1.0.0",
+  "description": "Amazon like website",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon --watch server server/server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjcasti1/amazonas.git"
+  },
+  "author": "Francisco Castillo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fjcasti1/amazonas/issues"
+  },
+  "homepage": "https://github.com/fjcasti1/amazonas#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.6"
+  }
+}
