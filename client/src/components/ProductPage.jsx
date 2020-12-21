@@ -56,7 +56,7 @@ const ProductPage = ({ match }) => {
                     {countInStock > 0 ? (
                       <span className='success'>In Stock</span>
                     ) : (
-                      <span className='error'>Out of Stock</span>
+                      <span className='danger'>Out of Stock</span>
                     )}
                   </div>
                 </div>

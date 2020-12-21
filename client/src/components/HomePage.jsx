@@ -1,28 +1,20 @@
-import React, { useState, useEffect, Fragment } from 'react';
-import axios from 'axios';
+import React, { useEffect, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Product from './Product';
 import Spinner from './Spinner';
 import Alert from './Alert';
 
+import { listProducts } from '../actions/productActions';
+
 const HomePage = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+
+  const productList = useSelector((state) => state.productList);
+  const { loading, error, products } = productList;
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const res = await axios.get('/api/products');
-        setLoading(false);
-        setProducts(res.data);
-      } catch (err) {
-        setError(err.message);
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <Fragment>
