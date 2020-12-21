@@ -15,7 +15,11 @@ html {
   --gold: #f0c040;
   --green: #20a020;
   --red: #a02020;
+  --light-red: #ffe0e0e0;
   --yellow: #a4a4a4;
+
+  --blue: #2020a0;
+  --light-gray-3: #e0e0ff;
 }
 
 body {
@@ -171,6 +175,20 @@ img.large {
 .success {
   color: var(--green);
 }
-.error {
+.danger {
   color: var(--red);
+}
+.alert {
+  padding: 1rem;
+  border: 0.1rem solid transparent;
+  border-radius: 0.5rem;
+}
+.alert-info {
+  color: var(--blue);
+  background-color: var(--light-gray-3);
+}
+
+.alert-danger {
+  color: var(--red);
+  background-color: var(--light-red);
 }
