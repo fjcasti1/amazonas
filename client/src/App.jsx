@@ -2,7 +2,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
 import HomePage from './components/HomePage';
-// import ProductPage from './components/ProductPage';
+import ProductPage from './components/ProductPage';
 import store from './store';
 
 const App = () => {
@@ -21,7 +21,7 @@ const App = () => {
           </header>
           <main>
             <Route exact path='/' component={HomePage} />
-            {/* <Route exact path='/product/:id' component={ProductPage} /> */}
+            <Route exact path='/products/:id' component={ProductPage} />
           </main>
 
           <footer className='row center'>All rights reserverd</footer>
