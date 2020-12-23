@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
+import CartPage from './components/CartPage';
 import HomePage from './components/HomePage';
 import ProductPage from './components/ProductPage';
 import store from './store';
@@ -22,6 +23,7 @@ const App = () => {
           <main>
             <Route exact path='/' component={HomePage} />
             <Route exact path='/products/:id' component={ProductPage} />
+            <Route exact path='/cart/:id?' component={CartPage} />
           </main>
 
           <footer className='row center'>All rights reserverd</footer>
