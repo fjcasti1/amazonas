@@ -5,6 +5,7 @@ import Rating from './Rating';
 import Spinner from './Spinner';
 import Alert from './Alert';
 import { detailsProduct } from '../actions/productActions';
+import { addToCart } from '../actions/cartActions';
 
 const ProductPage = ({ match, history }) => {
   const dispatch = useDispatch();
@@ -16,7 +17,8 @@ const ProductPage = ({ match, history }) => {
   const [qty, setQty] = useState(1);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${productId}?qty=${qty}`);
+    dispatch(addToCart(product, qty));
+    // history.push(`/cart/${productId}?qty=${qty}`);
   };
 
   useEffect(() => {
@@ -79,10 +81,12 @@ const ProductPage = ({ match, history }) => {
                           <div>
                             <select
                               value={qty}
-                              onChange={(e) => setQty(e.target.value)}
+                              onChange={(e) => setQty(Number(e.target.value))}
                             >
                               {[...Array(product.countInStock).keys()].map((x) => (
-                                <option value={x + 1}>{x + 1}</option>
+                                <option key={x} value={x + 1}>
+                                  {x + 1}
+                                </option>
                               ))}
                             </select>
                           </div>
