@@ -7,7 +7,7 @@ import Alert from './Alert';
 import { detailsProduct } from '../actions/productActions';
 import { addToCart } from '../actions/cartActions';
 
-const ProductPage = ({ match, history }) => {
+const ProductPage = ({ match }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -18,7 +18,6 @@ const ProductPage = ({ match, history }) => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(product, qty));
-    // history.push(`/cart/${productId}?qty=${qty}`);
   };
 
   useEffect(() => {
