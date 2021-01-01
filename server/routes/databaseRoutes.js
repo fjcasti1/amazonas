@@ -17,10 +17,10 @@ databaseRouter.get(
   }),
 );
 
-// @route     GET api/database/users/clear
+// @route     DELETE api/database/users/clear
 // @desc      Clear users data from database
 // @access    Public
-databaseRouter.get(
+databaseRouter.delete(
   '/users/clear',
   expressAsyncHandler(async (req, res) => {
     await User.deleteMany({});
@@ -39,10 +39,10 @@ databaseRouter.get(
   }),
 );
 
-// @route     GET api/database/products/clear
+// @route     DELETE api/database/products/clear
 // @desc      Clear products data from database
 // @access    Public
-databaseRouter.get(
+databaseRouter.delete(
   '/products/clear',
   expressAsyncHandler(async (req, res) => {
     await Product.deleteMany({});
