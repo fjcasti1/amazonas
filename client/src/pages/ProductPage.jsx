@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Rating from './Rating';
-import Spinner from './Spinner';
-import Alert from './Alert';
+import Rating from '../components/Rating';
+import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 import { detailsProduct } from '../actions/productActions';
 import { addToCart } from '../actions/cartActions';
 

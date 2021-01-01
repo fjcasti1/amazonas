@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
-import CartPage from './components/CartPage';
-import HomePage from './components/HomePage';
-import ProductPage from './components/ProductPage';
+import CartPage from './pages/CartPage';
+import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
 
 const App = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);

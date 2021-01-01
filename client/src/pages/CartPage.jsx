@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Alert from './Alert';
+import Alert from '../components/Alert';
 import { changeProductQty, removeFromCart } from '../actions/cartActions';
 
 const CartPage = ({ history }) => {

@@ -1,8 +1,8 @@
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Product from './Product';
-import Spinner from './Spinner';
-import Alert from './Alert';
+import Product from '../components/Product';
+import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 import { listProducts } from '../actions/productActions';
 
