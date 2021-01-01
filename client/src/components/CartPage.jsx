@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Alert from './Alert';
-import { changeProductQty } from '../actions/cartActions';
+import { changeProductQty, removeFromCart } from '../actions/cartActions';
 
 const CartPage = ({ history }) => {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ const CartPage = ({ history }) => {
   const cartItems = useSelector((state) => state.cart.cartItems);
 
   const removeFromCartHandler = (productId) => {
-    console.log(`remove product ${productId}`);
+    dispatch(removeFromCart(productId));
   };
   const checkoutHandler = (productId) => {
     history.push('/signin?redirect=shipping');
@@ -56,7 +56,7 @@ const CartPage = ({ history }) => {
                   <div>
                     <button
                       type='button'
-                      onClick={removeFromCartHandler(item.product)}
+                      onClick={(e) => removeFromCartHandler(item.product)}
                     >
                       Delete
                     </button>
