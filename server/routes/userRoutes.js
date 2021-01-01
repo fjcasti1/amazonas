@@ -4,12 +4,12 @@ import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
 import { generateToken } from '../utils.js';
 
-const authRouter = express.Router();
+const userRouter = express.Router();
 
-// @route     POST api/auth/login
+// @route     POST api/users/login
 // @desc      Log in user
 // @access    Public
-authRouter.post(
+userRouter.post(
   '/login',
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
@@ -29,4 +29,4 @@ authRouter.post(
   }),
 );
 
-export default authRouter;
+export default userRouter;

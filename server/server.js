@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/mongoDB.js';
 import databaseRouter from './routes/databaseRoutes.js';
 import productRouter from './routes/productRoutes.js';
-import authRouter from './routes/authRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 // Routes
 app.use('/api/database', databaseRouter);
 app.use('/api/products', productRouter);
-app.use('/api/auth', authRouter);
+app.use('/api/users', userRouter);
 
 app.get('/', (req, res) => res.send('API running...'));
 
