@@ -1,11 +1,14 @@
-import express from 'express';
+import express, { urlencoded } from 'express';
 import 'colors';
 import dotenv from 'dotenv';
 import connectDB from './config/mongoDB.js';
 import databaseRouter from './routes/databaseRoutes.js';
 import productRouter from './routes/productRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 const app = express();
+app.use(express.json());
+app.use(urlencoded({ extended: true }));
 
 // Access to env variables
 dotenv.config();
@@ -18,6 +21,7 @@ const PORT = process.env.PORT || 5000;
 // Routes
 app.use('/api/database', databaseRouter);
 app.use('/api/products', productRouter);
+app.use('/api/auth', authRouter);
 
 app.get('/', (req, res) => res.send('API running...'));
 
