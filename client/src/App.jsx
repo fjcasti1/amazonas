@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Route } from 'react-router-dom';
@@ -6,10 +7,17 @@ import CartPage from './pages/CartPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
+import { logout } from './actions/userActions';
 
 const App = () => {
+  const dispatch = useDispatch();
+
   const cartItems = useSelector((state) => state.cart.cartItems);
   const userInfo = useSelector((state) => state.userLogin.userInfo);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <BrowserRouter>
@@ -24,7 +32,16 @@ const App = () => {
               <span className='badge'>{cartItems.length}</span>
             )}
             {userInfo ? (
-              <Link to='#'>{userInfo.name}</Link>
+              <div className='dropdown'>
+                <Link to='#'>
+                  {userInfo.name} <i className='fa fa-caret-down'></i>{' '}
+                </Link>
+                <ul className='dropdown-content'>
+                  <Link to='#logout' onClick={logoutHandler}>
+                    Sign Out
+                  </Link>
+                </ul>
+              </div>
             ) : (
               <Link to='/login'>Sign In</Link>
             )}
