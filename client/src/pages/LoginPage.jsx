@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { login } from '../actions/userActions';
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log('submit');
-    console.log(email);
-    console.log(password);
+    dispatch(login(email, password));
   };
 
   return (
