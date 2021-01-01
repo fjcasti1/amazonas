@@ -13,7 +13,7 @@ const CartPage = ({ history }) => {
     dispatch(removeFromCart(productId));
   };
   const checkoutHandler = (productId) => {
-    history.push('/signin?redirect=shipping');
+    history.push('/login?redirect=shipping');
     console.log('Checkout');
   };
 
