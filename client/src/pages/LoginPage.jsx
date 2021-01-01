@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login } from '../actions/userActions';
+import Alert from '../components/Alert';
+import Spinner from '../components/Spinner';
 
 const LoginPage = ({ history, location }) => {
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.userLogin.userInfo);
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, userInfo, error } = userLogin;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,6 +33,8 @@ const LoginPage = ({ history, location }) => {
         <div>
           <h1>Sign In</h1>
         </div>
+        {loading && <Spinner />}
+        {error && <Alert variant='danger'>{error}</Alert>}
         <div>
           <label htmlFor='email'>Email address</label>
           <input
