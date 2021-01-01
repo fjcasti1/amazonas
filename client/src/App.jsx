@@ -9,6 +9,7 @@ import LoginPage from './pages/LoginPage';
 
 const App = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
+  const userInfo = useSelector((state) => state.userLogin.userInfo);
 
   return (
     <BrowserRouter>
@@ -22,7 +23,11 @@ const App = () => {
             {cartItems.length > 0 && (
               <span className='badge'>{cartItems.length}</span>
             )}
-            <Link to='/login'>Sign In</Link>
+            {userInfo ? (
+              <Link to='#'>{userInfo.name}</Link>
+            ) : (
+              <Link to='/login'>Sign In</Link>
+            )}
           </div>
         </header>
         <main>
