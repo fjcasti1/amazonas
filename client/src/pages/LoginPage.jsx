@@ -65,7 +65,7 @@ const LoginPage = ({ history, location }) => {
         <div>
           <label />
           <div>
-            New customer? {'  '} <Link to='/register'>Create an aacount</Link>
+            New customer? <Link to={`/register?redirect=${redirect}`}>Sign In</Link>
           </div>
         </div>
       </form>
