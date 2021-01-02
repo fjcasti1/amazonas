@@ -9,6 +9,7 @@ import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import { logout } from './actions/userActions';
+import ShippingAddressPage from './pages/ShippingAddressPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -52,6 +53,7 @@ const App = () => {
           <Route exact path='/' component={HomePage} />
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
+          <Route exact path='/shipping' component={ShippingAddressPage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
