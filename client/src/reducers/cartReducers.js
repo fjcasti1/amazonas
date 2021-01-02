@@ -1,11 +1,23 @@
 import {
   CART_ADD_ITEM,
   CART_CHANGE_ITEM_QTY,
+  CART_CLEAR,
   CART_REMOVE_ITEM,
+  CART_SAVE_PAYMENT_METHOD,
   CART_SAVE_SHIPPING_ADDRESS,
 } from '../constants/cartConstants';
 
-export const cartReducer = (state = { cartItems: [] }, action) => {
+const initialState = {
+  cartItems: localStorage.getItem('cartItems')
+    ? JSON.parse(localStorage.getItem('cartItems'))
+    : [],
+  shippingAddress: localStorage.getItem('shippingAddress')
+    ? JSON.parse(localStorage.getItem('shippingAddress'))
+    : {},
+  paymentMethod: 'PayPal',
+};
+
+export const cartReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -45,7 +57,13 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
         ...state,
         shippingAddress: payload,
       };
-
+    case CART_SAVE_PAYMENT_METHOD:
+      return {
+        ...state,
+        paymentMethod: payload,
+      };
+    case CART_CLEAR:
+      return initialState;
     default:
       return state;
   }

@@ -8,7 +8,13 @@ import {
   USER_REGISTER_SUCCESS,
 } from '../constants/userConstants';
 
-export const userAuthReducer = (state = {}, action) => {
+const initialState = {
+  userInfo: localStorage.getItem('userInfo')
+    ? JSON.parse(localStorage.getItem('userInfo'))
+    : null,
+};
+
+export const userAuthReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case USER_REGISTER_REQUEST:
@@ -29,7 +35,7 @@ export const userAuthReducer = (state = {}, action) => {
         error: payload,
       };
     case USER_LOGOUT:
-      return {};
+      return initialState;
     default:
       return state;
   }

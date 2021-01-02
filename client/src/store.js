@@ -7,22 +7,6 @@ import {
 } from './reducers/productReducers';
 import { userAuthReducer } from './reducers/userReducers';
 
-const initialState = {
-  cart: {
-    cartItems: localStorage.getItem('cartItems')
-      ? JSON.parse(localStorage.getItem('cartItems'))
-      : [],
-    shippingAddress: localStorage.getItem('shippingAddress')
-      ? JSON.parse(localStorage.getItem('shippingAddress'))
-      : {},
-  },
-  userAuth: {
-    userInfo: localStorage.getItem('userInfo')
-      ? JSON.parse(localStorage.getItem('userInfo'))
-      : null,
-  },
-};
-
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
@@ -32,10 +16,6 @@ const reducer = combineReducers({
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-const store = createStore(
-  reducer,
-  initialState,
-  composeEnhancer(applyMiddleware(thunk)),
-);
+const store = createStore(reducer, composeEnhancer(applyMiddleware(thunk)));
 
 export default store;
