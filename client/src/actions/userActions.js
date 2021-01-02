@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import { CART_CLEAR } from '../constants/cartConstants';
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -63,6 +64,8 @@ export const login = (email, password) => async (dispatch) => {
 
 export const logout = () => async (dispatch) => {
   localStorage.removeItem('cartItems');
+  localStorage.removeItem('shippingAddress');
   localStorage.removeItem('userInfo');
+  dispatch({ type: CART_CLEAR });
   dispatch({ type: USER_LOGOUT });
 };
