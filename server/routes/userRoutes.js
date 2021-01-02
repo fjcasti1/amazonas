@@ -29,4 +29,28 @@ userRouter.post(
   }),
 );
 
+// @route     POST api/users/register
+// @desc      Register user
+// @access    Public
+userRouter.post(
+  '/register',
+  expressAsyncHandler(async (req, res) => {
+    const { name, email, password } = req.body;
+    const newUser = new User({
+      name,
+      email,
+      password: bcrypt.hashSync(password, 8),
+    });
+
+    const createdUser = await newUser.save();
+    return res.send({
+      _id: createdUser.id,
+      name: createdUser.name,
+      email: createdUser.email,
+      isAdmin: createdUser.isAdmin,
+      token: generateToken(createdUser),
+    });
+  }),
+);
+
 export default userRouter;
