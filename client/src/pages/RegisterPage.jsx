@@ -8,8 +8,8 @@ import Spinner from '../components/Spinner';
 const RegisterPage = ({ history, location }) => {
   const dispatch = useDispatch();
 
-  const userRegister = useSelector((state) => state.userRegister);
-  const { loading, userInfo, error } = userRegister;
+  const userAuth = useSelector((state) => state.userAuth);
+  const { loading, userInfo, error } = userAuth;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

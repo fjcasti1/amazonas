@@ -8,8 +8,8 @@ import Spinner from '../components/Spinner';
 const LoginPage = ({ history, location }) => {
   const dispatch = useDispatch();
 
-  const userLogin = useSelector((state) => state.userLogin);
-  const { loading, userInfo, error } = userLogin;
+  const userAuth = useSelector((state) => state.userAuth);
+  const { loading, userInfo, error } = userAuth;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -65,7 +65,8 @@ const LoginPage = ({ history, location }) => {
         <div>
           <label />
           <div>
-            New customer? <Link to={`/register?redirect=${redirect}`}>Sign In</Link>
+            New customer?{' '}
+            <Link to={`/register?redirect=${redirect}`}>Create an account</Link>
           </div>
         </div>
       </form>

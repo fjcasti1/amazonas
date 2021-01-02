@@ -14,7 +14,7 @@ const App = () => {
   const dispatch = useDispatch();
 
   const cartItems = useSelector((state) => state.cart.cartItems);
-  const userInfo = useSelector((state) => state.userLogin.userInfo);
+  const userInfo = useSelector((state) => state.userAuth.userInfo);
 
   const logoutHandler = () => {
     dispatch(logout());
