@@ -11,6 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import { logout } from './actions/userActions';
 import ShippingAddressPage from './pages/ShippingAddressPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
+import PlaceOrderPage from './pages/PlaceOrderPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const App = () => {
           <Route exact path='/cart/:id?' component={CartPage} />
           <Route exact path='/shipping' component={ShippingAddressPage} />
           <Route exact path='/payment' component={PaymentMethodPage} />
+          <Route exact path='/placeorder' component={PlaceOrderPage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
