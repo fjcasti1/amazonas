@@ -198,6 +198,9 @@ img.large {
 }
 
 /* Alert */
+.spinner {
+  display: block !important;
+}
 .success {
   color: var(--green);
 }
