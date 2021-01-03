@@ -43,4 +43,23 @@ orderRouter.post(
   }),
 );
 
+// @route     GET api/orders/:id
+// @desc      Get order by Id
+// @access    Private
+orderRouter.get(
+  '/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const orderId = req.params.id;
+
+    const order = await Order.findById(orderId);
+
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  }),
+);
+
 export default orderRouter;
