@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { getOrderDetails } from '../actions/orderActions';
+import { getOrderDetails, payOrder } from '../actions/orderActions';
+import { ORDER_PAY_RESET } from '../constants/orderConstants';
 
 const OrderDetailsPage = ({ match }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,9 @@ const OrderDetailsPage = ({ match }) => {
   const [sdkReady, setSdkReady] = useState(false);
 
   const { loading, error, order } = useSelector((state) => state.orderDetails);
+  const { loading: loadingPay, error: errorPay, success: successPay } = useSelector(
+    (state) => state.orderPay,
+  );
 
   const orderId = match.params.id;
 
@@ -28,7 +32,8 @@ const OrderDetailsPage = ({ match }) => {
       document.body.appendChild(script);
     };
 
-    if (!order) {
+    if (!order || successPay) {
+      dispatch({ type: ORDER_PAY_RESET });
       dispatch(getOrderDetails(orderId));
     } else {
       if (!order.isPaid) {
@@ -39,10 +44,10 @@ const OrderDetailsPage = ({ match }) => {
         }
       }
     }
-  }, [dispatch, orderId, order]);
+  }, [dispatch, orderId, order, successPay]);
 
-  const successPaymentHandler = () => {
-    console.log('success');
+  const successPaymentHandler = (paymentResult) => {
+    dispatch(payOrder(order, paymentResult));
   };
 
   return loading ? (
@@ -147,13 +152,16 @@ const OrderDetailsPage = ({ match }) => {
               </li>
               {!order.isPaid && (
                 <li>
-                  {sdkReady ? (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
-                  ) : (
+                  {!sdkReady || loadingPay ? (
                     <Spinner />
+                  ) : (
+                    <Fragment>
+                      {errorPay && <Alert variant='danger'>{errorPay}</Alert>}
+                      <PayPalButton
+                        amount={order.totalPrice}
+                        onSuccess={successPaymentHandler}
+                      />
+                    </Fragment>
                   )}
                 </li>
               )}
