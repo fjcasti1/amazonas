@@ -1,20 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
+import { PayPalButton } from 'react-paypal-button-v2';
 import { getOrderDetails } from '../actions/orderActions';
 
 const OrderDetailsPage = ({ match }) => {
   const dispatch = useDispatch();
+
+  const [sdkReady, setSdkReady] = useState(false);
 
   const { loading, error, order } = useSelector((state) => state.orderDetails);
 
   const orderId = match.params.id;
 
   useEffect(() => {
-    dispatch(getOrderDetails(orderId));
-  }, [dispatch, orderId]);
+    const addPayPalScript = async () => {
+      const res = await axios.get('/api/config/paypal');
+      const clientId = res.data;
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      script.async = true;
+      script.onload = () => setSdkReady(true);
+      document.body.appendChild(script);
+    };
+
+    if (!order) {
+      dispatch(getOrderDetails(orderId));
+    } else {
+      if (!order.isPaid) {
+        if (!window.paypal) {
+          addPayPalScript();
+        } else {
+          setSdkReady(true);
+        }
+      }
+    }
+  }, [dispatch, orderId, order]);
+
+  const successPaymentHandler = () => {
+    console.log('success');
+  };
 
   return loading ? (
     <Spinner />
@@ -116,16 +145,18 @@ const OrderDetailsPage = ({ match }) => {
                   </div>
                 </div>
               </li>
-              {/* <li>
-                <button
-                  type='button'
-                  className='primary block'
-                  onClick={placeOrderHandler}
-                  disabled={order.orderItems.length === 0}
-                >
-                  Place Order
-                </button>
-              </li> */}
+              {!order.isPaid && (
+                <li>
+                  {sdkReady ? (
+                    <PayPalButton
+                      amount={order.totalPrice}
+                      onSuccess={successPaymentHandler}
+                    />
+                  ) : (
+                    <Spinner />
+                  )}
+                </li>
+              )}
             </ul>
           </div>
         </div>
