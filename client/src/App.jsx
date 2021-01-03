@@ -12,6 +12,7 @@ import { logout } from './actions/userActions';
 import ShippingAddressPage from './pages/ShippingAddressPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
+import OrderDetailsPage from './pages/OrderDetailsPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const App = () => {
           <Route exact path='/shipping' component={ShippingAddressPage} />
           <Route exact path='/payment' component={PaymentMethodPage} />
           <Route exact path='/placeorder' component={PlaceOrderPage} />
+          <Route exact path='/orders/:id' component={OrderDetailsPage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
