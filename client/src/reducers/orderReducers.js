@@ -5,9 +5,9 @@ import {
   ORDER_CREATE_SUCCESS,
 } from '../constants/orderConstants';
 
-const initialState = {};
+const orderCreateInitialState = {};
 
-export const orderReducer = (state = initialState, action) => {
+export const orderCreateReducer = (state = orderCreateInitialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -25,7 +25,7 @@ export const orderReducer = (state = initialState, action) => {
         error: payload,
       };
     case ORDER_CREATE_RESET:
-      return initialState;
+      return orderCreateInitialState;
     default:
       return state;
   }
