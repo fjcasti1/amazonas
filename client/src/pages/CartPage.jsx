@@ -14,7 +14,6 @@ const CartPage = ({ history }) => {
   };
   const checkoutHandler = (productId) => {
     history.push('/login?redirect=shipping');
-    console.log('Checkout');
   };
 
   return (
