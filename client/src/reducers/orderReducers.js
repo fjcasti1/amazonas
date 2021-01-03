@@ -36,7 +36,6 @@ export const orderCreateReducer = (state = orderCreateInitialState, action) => {
 
 const orderDetailsInitialState = {
   loading: true,
-  order: {},
 };
 
 export const orderDetailsReducer = (state = orderDetailsInitialState, action) => {
