@@ -14,6 +14,7 @@ html {
   --light-gray-2: #a4a4a4;
   --gold: #f0c040;
   --green: #20a020;
+  --light-green: #eeffe0;
   --red: #a02020;
   --light-red: #ffe0e0e0;
   --yellow: #a4a4a4;
@@ -216,10 +217,13 @@ img.large {
   color: var(--blue);
   background-color: var(--light-gray-3);
 }
-
 .alert-danger {
   color: var(--red);
   background-color: var(--light-red);
+}
+.alert-success {
+  color: var(--green);
+  background-color: var(--light-green);
 }
 
 /* Form */
