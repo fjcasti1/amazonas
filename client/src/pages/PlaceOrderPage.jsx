@@ -1,9 +1,14 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { createOrder } from '../actions/orderActions';
 import CheckoutSteps from '../components/CheckoutSteps';
+import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import Alert from '../components/Alert';
+import Spinner from '../components/Spinner';
 
 const PlaceOrderPage = ({ history }) => {
+  const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const { cartItems, shippingAddress, paymentMethod } = cart;
 
@@ -11,14 +16,25 @@ const PlaceOrderPage = ({ history }) => {
     history.pushState('/payment');
   }
 
+  const { loading, success, error, order } = useSelector((state) => state.order);
+
   cart.itemsPrice = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0);
   cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10;
   cart.taxPrice = 0.15 * cart.itemsPrice;
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
   const placeOrderHandler = () => {
-    console.log('place order');
+    const order = { ...cart, orderItems: cartItems };
+    delete order.cartItems;
+    dispatch(createOrder(order));
   };
+
+  useEffect(() => {
+    if (success) {
+      history.push(`/order/${order._id}`);
+      dispatch({ type: ORDER_CREATE_RESET });
+    }
+  }, [dispatch, success, history, order]);
 
   return (
     <div>
@@ -116,6 +132,8 @@ const PlaceOrderPage = ({ history }) => {
                   Place Order
                 </button>
               </li>
+              {loading && <Spinner />}
+              {error && <Alert variant='danger'>{error}</Alert>}
             </ul>
           </div>
         </div>
