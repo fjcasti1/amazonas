@@ -16,7 +16,9 @@ const PlaceOrderPage = ({ history }) => {
     history.pushState('/payment');
   }
 
-  const { loading, success, error, order } = useSelector((state) => state.order);
+  const { loading, success, error, order } = useSelector(
+    (state) => state.orderCreate,
+  );
 
   cart.itemsPrice = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0);
   cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10;
@@ -31,7 +33,7 @@ const PlaceOrderPage = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`);
+      history.push(`/orders/${order._id}`);
       dispatch({ type: ORDER_CREATE_RESET });
     }
   }, [dispatch, success, history, order]);
