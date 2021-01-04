@@ -1,14 +1,20 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { detailsProduct } from '../actions/productActions';
+import { detailsProduct, updateProduct } from '../actions/productActions';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
-const ProductEditPage = ({ match }) => {
+const ProductEditPage = ({ match, history }) => {
   const dispatch = useDispatch();
   const productId = match.params.id;
 
   const { loading, error, product } = useSelector((state) => state.productDetails);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = useSelector((state) => state.productUpdate);
 
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -19,7 +25,11 @@ const ProductEditPage = ({ match }) => {
   const [description, setDescription] = useState('');
 
   useEffect(() => {
-    if (!product || product._id !== productId) {
+    if (successUpdate) {
+      history.push('/productlist');
+    }
+    if (!product || product._id !== productId || successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(detailsProduct(productId));
     } else {
       setName(product.name);
@@ -30,10 +40,22 @@ const ProductEditPage = ({ match }) => {
       setBrand(product.brand);
       setDescription(product.description);
     }
-  }, [dispatch, product, productId]);
+  }, [dispatch, history, product, productId, successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
+    dispatch(
+      updateProduct({
+        _id: product._id,
+        name,
+        price,
+        image,
+        category,
+        brand,
+        countInStock,
+        description,
+      }),
+    );
   };
 
   return (
@@ -42,6 +64,8 @@ const ProductEditPage = ({ match }) => {
         <div>
           <h1>Edit Product {productId}</h1>
         </div>
+        {loadingUpdate && <Spinner />}
+        {errorUpdate && <Alert variant='danger'>{errorUpdate}</Alert>}
         {loading ? (
           <Spinner />
         ) : error ? (
