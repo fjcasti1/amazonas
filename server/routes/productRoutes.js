@@ -56,4 +56,40 @@ productRouter.post(
   }),
 );
 
+// @route     PUT api/products/:id
+// @desc      Update a product
+// @access    Private Admin
+productRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+    const {
+      name,
+      price,
+      image,
+      category,
+      brand,
+      countInStock,
+      description,
+    } = req.body;
+
+    if (!product) {
+      res.status(404).send({ message: 'Product Not Found' });
+    } else {
+      product.name = name;
+      product.price = price;
+      product.image = image;
+      product.category = category;
+      product.brand = brand;
+      product.countInStock = countInStock;
+      product.description = description;
+    }
+    const updatedProduct = await product.save();
+    res.send({ message: 'Product Updated', product: updatedProduct });
+  }),
+);
+
 export default productRouter;
