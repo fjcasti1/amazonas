@@ -18,9 +18,11 @@ html {
   --red: #a02020;
   --light-red: #ffe0e0e0;
   --yellow: #a4a4a4;
-
   --blue: #2020a0;
   --light-gray-3: #e0e0ff;
+
+  --table-gray: #f4f4f4;
+  --table-border: #e4e4e4;
 }
 
 body {
@@ -110,6 +112,9 @@ button.primary {
 }
 button.block {
   width: 100%;
+}
+button.small {
+  font-size: 1.2rem;
 }
 
 /* Header */
@@ -275,4 +280,22 @@ img.large {
 .checkout-steps > div.active {
   border-top-color: var(--orange);
   color: var(--orange);
+}
+
+/* Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table tbody tr:nth-of-type(odd) {
+  background-color: var(--table-gray);
+}
+.table td,
+.table th {
+  text-align: left;
+  padding: 0.5rem;
+  border: 0.1rem solid var(--table-border);
+}
+.table button {
+  margin: 0 0.2rem;
 }
