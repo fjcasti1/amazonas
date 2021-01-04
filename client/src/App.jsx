@@ -13,6 +13,8 @@ import OrderHistory from './pages/OrderHistory';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
 import Header from './components/Header';
+import AdminRoute from './components/AdminRoute';
+import ProductListPage from './pages/ProductListPage';
 
 const App = () => {
   return (
@@ -29,6 +31,7 @@ const App = () => {
           <Route exact path='/orders/:id' component={OrderDetailsPage} />
           <Route exact path='/orderhistory' component={OrderHistory} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
+          <AdminRoute exact path='/productlist' component={ProductListPage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
