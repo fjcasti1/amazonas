@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
-import { generateToken } from '../utils.js';
+import { generateToken, isAuth } from '../utils.js';
 
 const userRouter = express.Router();
 
@@ -50,6 +50,53 @@ userRouter.post(
       isAdmin: createdUser.isAdmin,
       token: generateToken(createdUser),
     });
+  }),
+);
+
+// @route     GET api/users/:id
+// @desc      Get user by Id
+// @access    Private
+userRouter.get(
+  '/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const user = await User.findById(userId).select(['name', 'email']);
+    if (user) {
+      res.send(user);
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
+// @route     PUT api/users/profile
+// @desc      Edit user profile
+// @access    Private
+userRouter.put(
+  '/profile',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+    if (user) {
+      const { name, email, password } = req.body;
+      if (name) user.name = name;
+      if (email) user.email = email;
+      if (password) {
+        user.password = bcrypt.hashSync(password, 8);
+      }
+      const updatedUser = await user.save();
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+        token: generateToken(updatedUser),
+      });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
   }),
 );
 
