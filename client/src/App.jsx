@@ -14,6 +14,8 @@ import PaymentMethodPage from './pages/PaymentMethodPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import OrderHistory from './pages/OrderHistory';
+import ProfilePage from './pages/ProfilePage';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -44,6 +46,9 @@ const App = () => {
                 </Link>
                 <ul className='dropdown-content'>
                   <li>
+                    <Link to='/profile'>Edit Profile</Link>
+                  </li>
+                  <li>
                     <Link to='/orderhistory'>My Orders</Link>
                   </li>
                   <li>
@@ -67,6 +72,7 @@ const App = () => {
           <Route exact path='/placeorder' component={PlaceOrderPage} />
           <Route exact path='/orders/:id' component={OrderDetailsPage} />
           <Route exact path='/orderhistory' component={OrderHistory} />
+          <PrivateRoute exact path='/profile' component={ProfilePage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
