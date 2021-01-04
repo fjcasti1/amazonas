@@ -6,6 +6,9 @@ import {
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_MY_LIST_FAIL,
+  ORDER_MY_LIST_REQUEST,
+  ORDER_MY_LIST_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_RESET,
@@ -83,6 +86,29 @@ export const orderPayReducer = (state = orderPayInitialState, action) => {
       };
     case ORDER_PAY_RESET:
       return orderPayInitialState;
+    default:
+      return state;
+  }
+};
+
+const orderMyListInitialState = { orders: [] };
+
+export const orderMyListReducer = (state = orderMyListInitialState, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case ORDER_MY_LIST_REQUEST:
+      return { loading: true };
+    case ORDER_MY_LIST_SUCCESS:
+      return {
+        loading: false,
+        orders: payload,
+      };
+    case ORDER_MY_LIST_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
     default:
       return state;
   }
