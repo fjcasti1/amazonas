@@ -13,6 +13,7 @@ import ShippingAddressPage from './pages/ShippingAddressPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
+import OrderHistory from './pages/OrderHistory';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -42,9 +43,14 @@ const App = () => {
                   {userInfo.name} <i className='fa fa-caret-down'></i>{' '}
                 </Link>
                 <ul className='dropdown-content'>
-                  <Link to='#logout' onClick={logoutHandler}>
-                    Sign Out
-                  </Link>
+                  <li>
+                    <Link to='/orderhistory'>My Orders</Link>
+                  </li>
+                  <li>
+                    <Link to='#logout' onClick={logoutHandler}>
+                      Sign Out
+                    </Link>
+                  </li>
                 </ul>
               </div>
             ) : (
@@ -60,6 +66,7 @@ const App = () => {
           <Route exact path='/payment' component={PaymentMethodPage} />
           <Route exact path='/placeorder' component={PlaceOrderPage} />
           <Route exact path='/orders/:id' component={OrderDetailsPage} />
+          <Route exact path='/orderhistory' component={OrderHistory} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
