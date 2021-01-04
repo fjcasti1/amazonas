@@ -18,7 +18,7 @@ const ProductListPage = ({ history }) => {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      history.push(`api/products/${createdProduct._id}/edit`);
+      history.push(`products/${createdProduct._id}/edit`);
     }
     dispatch(listProducts());
   }, [dispatch, history, successCreate, createdProduct]);
