@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
-import { generateToken, isAuth } from '../utils.js';
+import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
 
@@ -96,6 +96,23 @@ userRouter.put(
       });
     } else {
       res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
+// @route     GET api/users
+// @desc      Get all users
+// @access    Private Admin
+userRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    if (users) {
+      res.send(users);
+    } else {
+      res.status(404).send({ message: 'Users Not Found' });
     }
   }),
 );
