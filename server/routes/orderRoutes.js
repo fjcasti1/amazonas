@@ -127,4 +127,23 @@ orderRouter.put(
   }),
 );
 
+// @route     DELETE api/orders/:id
+// @desc      Delete an order by Id
+// @access    Private Admin
+orderRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      await order.remove();
+      res.send({ message: 'Order removed' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  }),
+);
+
 export default orderRouter;
