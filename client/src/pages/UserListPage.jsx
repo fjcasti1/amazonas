@@ -2,18 +2,34 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
-import { listUsers } from '../actions/userActions';
+import { deleteUser, listUsers } from '../actions/userActions';
 
 const UserListPage = ({ history }) => {
   const dispatch = useDispatch();
   const { loading, error, users } = useSelector((state) => state.userList);
+  const { userInfo } = useSelector((state) => state.userAuth);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = useSelector((state) => state.userDelete);
 
+  // Initial load useEffect
   useEffect(() => {
     dispatch(listUsers());
   }, [dispatch]);
 
-  const deleteHandler = (productId) => {
-    console.log('delete');
+  // Actions useEffect
+  useEffect(() => {
+    if (successDelete) {
+      dispatch(listUsers());
+    }
+  }, [dispatch, successDelete]);
+
+  const deleteHandler = (userId) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteUser(userId));
+    }
   };
 
   return (
@@ -21,7 +37,9 @@ const UserListPage = ({ history }) => {
       <div className='row'>
         <h1>Users</h1>
       </div>
-      {loading ? (
+      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {successDelete && <Alert variant='success'>User Deleted Successfully</Alert>}
+      {loading || loadingDelete ? (
         <Spinner />
       ) : error ? (
         <Alert variant='danger'>{error}</Alert>
@@ -56,6 +74,7 @@ const UserListPage = ({ history }) => {
                   <button
                     type='button'
                     className='small'
+                    disabled={user._id === userInfo._id}
                     onClick={() => deleteHandler(user._id)}
                   >
                     Delete
