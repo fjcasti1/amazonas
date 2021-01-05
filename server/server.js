@@ -30,7 +30,15 @@ app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_I
 const __dirname = path.resolve();
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
-app.get('/', (req, res) => res.send('API running...'));
+// Serve
+if (process.env.MODE === 'development') {
+  app.get('/', (req, res) => res.send('API running...'));
+} else {
+  app.use(express.static(path.join(__dirname, '/client/build')));
+  app.get('*', (req, res) =>
+    res.sendFile(path.join(__dirname, '/client/build/index.html')),
+  );
+}
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });
