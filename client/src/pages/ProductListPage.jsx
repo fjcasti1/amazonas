@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createProduct, listProducts } from '../actions/productActions';
+import {
+  createProduct,
+  deleteProduct,
+  listProducts,
+} from '../actions/productActions';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
-import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
+import {
+  PRODUCT_CREATE_RESET,
+  PRODUCT_DELETE_RESET,
+} from '../constants/productConstants';
 
 const ProductListPage = ({ history }) => {
   const dispatch = useDispatch();
@@ -14,33 +21,41 @@ const ProductListPage = ({ history }) => {
     success: successCreate,
     product: createdProduct,
   } = useSelector((state) => state.productCreate);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = useSelector((state) => state.productDelete);
 
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
       history.push(`products/${createdProduct._id}/edit`);
     }
+    if (successDelete) {
+      dispatch({ type: PRODUCT_DELETE_RESET });
+      dispatch({ type: PRODUCT_CREATE_RESET });
+    }
     dispatch(listProducts());
-  }, [dispatch, history, successCreate, createdProduct]);
+  }, [dispatch, history, successCreate, createdProduct, successDelete]);
 
-  const createHandler = () => {
-    dispatch(createProduct());
-  };
-
-  const deleteHandler = () => {
-    console.log('delete');
+  const deleteHandler = (productId) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteProduct(productId));
+    }
   };
 
   return (
     <div>
       <div className='row'>
         <h1>Products</h1>
-        <button className='primary' onClick={createHandler}>
+        <button className='primary' onClick={() => dispatch(createProduct())}>
           Create Product
         </button>
       </div>
-      {loadingCreate && <Spinner />}
+      {loadingCreate || (loadingDelete && <Spinner />)}
       {errorCreate && <Alert variant='danger'>{errorCreate}</Alert>}
+      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
       {loading ? (
         <Spinner />
       ) : error ? (
@@ -73,7 +88,11 @@ const ProductListPage = ({ history }) => {
                   >
                     Edit
                   </button>
-                  <button type='button' className='small' onClick={deleteHandler}>
+                  <button
+                    type='button'
+                    className='small'
+                    onClick={() => deleteHandler(product._id)}
+                  >
                     Delete
                   </button>
                 </td>

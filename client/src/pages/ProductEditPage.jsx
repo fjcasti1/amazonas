@@ -34,11 +34,11 @@ const ProductEditPage = ({ match, history }) => {
 
   useEffect(() => {
     if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
       history.push('/productlist');
     }
 
     if (!product || product._id !== productId || successUpdate) {
-      dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(detailsProduct(productId));
     } else {
       setName(product.name);
@@ -62,6 +62,7 @@ const ProductEditPage = ({ match, history }) => {
           countInStock,
           description,
         }),
+        setSuccessUpload(false),
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
