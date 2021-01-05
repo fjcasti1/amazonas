@@ -5,8 +5,8 @@ import axios from 'axios';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
 import { PayPalButton } from 'react-paypal-button-v2';
-import { getOrderDetails, payOrder } from '../actions/orderActions';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions';
+import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
 
 const OrderDetailsPage = ({ match }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,12 @@ const OrderDetailsPage = ({ match }) => {
   const { loading: loadingPay, error: errorPay, success: successPay } = useSelector(
     (state) => state.orderPay,
   );
+  const {
+    loading: loadingDeliver,
+    error: errorDeliver,
+    success: successDeliver,
+  } = useSelector((state) => state.orderDeliver);
+  const userInfo = useSelector((state) => state.userAuth.userInfo);
 
   const orderId = match.params.id;
 
@@ -32,8 +38,9 @@ const OrderDetailsPage = ({ match }) => {
       document.body.appendChild(script);
     };
 
-    if (!order || order._id !== orderId || successPay) {
+    if (!order || order._id !== orderId || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
+      dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else {
       if (!order.isPaid) {
@@ -44,7 +51,7 @@ const OrderDetailsPage = ({ match }) => {
         }
       }
     }
-  }, [dispatch, orderId, order, successPay]);
+  }, [dispatch, orderId, order, successPay, successDeliver]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
@@ -161,6 +168,25 @@ const OrderDetailsPage = ({ match }) => {
                         amount={order.totalPrice}
                         onSuccess={successPaymentHandler}
                       />
+                    </Fragment>
+                  )}
+                </li>
+              )}
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <li>
+                  {loadingDeliver ? (
+                    <Spinner />
+                  ) : (
+                    <Fragment>
+                      {errorDeliver && (
+                        <Alert variant='danger'>{errorDeliver}</Alert>
+                      )}
+                      <button
+                        className='primary block'
+                        onClick={() => dispatch(deliverOrder(order._id))}
+                      >
+                        Deliver Order
+                      </button>
                     </Fragment>
                   )}
                 </li>
