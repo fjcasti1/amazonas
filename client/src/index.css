@@ -96,7 +96,7 @@ button {
   -moz-osx-font-smoothing: grayscale;
 }
 
-button {
+button:not([disabled]) {
   background-color: var(--light-gray);
   cursor: pointer;
 }
@@ -104,7 +104,7 @@ button {
 input:hover,
 select:hover,
 textarea:hover,
-button:hover {
+button:not([disabled]):hover {
   border: 0.1rem var(--dark-gray) solid;
 }
 button.primary {
