@@ -4,10 +4,13 @@ import { detailsProduct, updateProduct } from '../actions/productActions';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
 import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
+import axios from 'axios';
 
 const ProductEditPage = ({ match, history }) => {
   const dispatch = useDispatch();
   const productId = match.params.id;
+
+  const token = useSelector((state) => state.userAuth.userInfo.token);
 
   const { loading, error, product } = useSelector((state) => state.productDetails);
   const {
@@ -24,38 +27,72 @@ const ProductEditPage = ({ match, history }) => {
   const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
 
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState('');
+  const [successUpload, setSuccessUpload] = useState(false);
+  const [file, setFile] = useState(null);
+
   useEffect(() => {
     if (successUpdate) {
       history.push('/productlist');
     }
+
     if (!product || product._id !== productId || successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
       dispatch(detailsProduct(productId));
     } else {
       setName(product.name);
       setPrice(product.price);
-      setImage(product.image);
+      // setImage(product.image);
       setCategory(product.category);
       setCountInStock(product.countInStock);
       setBrand(product.brand);
       setDescription(product.description);
     }
-  }, [dispatch, history, product, productId, successUpdate]);
 
-  const submitHandler = (e) => {
+    if (successUpload) {
+      dispatch(
+        updateProduct({
+          _id: product._id,
+          name,
+          price,
+          image,
+          category,
+          brand,
+          countInStock,
+          description,
+        }),
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, history, product, productId, successUpdate, successUpload]);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
-    dispatch(
-      updateProduct({
-        _id: product._id,
-        name,
-        price,
-        image,
-        category,
-        brand,
-        countInStock,
-        description,
-      }),
-    );
+    // Upload image and set successUpload to true
+    // Inside useEffect, will disptach(updateProduct(product))
+    const bodyFormData = new FormData();
+    bodyFormData.append('image', file);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    setLoadingUpload(true);
+    try {
+      const { data } = await axios.post(
+        '/api/products/uploadimage',
+        bodyFormData,
+        config,
+      );
+      setImage(data); // image path
+      setSuccessUpload(true);
+    } catch (error) {
+      setErrorUpload(error.message);
+      setSuccessUpload(false);
+    }
+    setLoadingUpload(false);
   };
 
   return (
@@ -95,15 +132,15 @@ const ProductEditPage = ({ match, history }) => {
               />
             </div>
             <div>
-              <label htmlFor='image'>Image</label>
+              <label htmlFor='imageFile'>Upload Image</label>
               <input
-                type='text'
-                id='image'
-                placeholder='Enter image'
-                required
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                type='file'
+                id='imageFile'
+                placeholder='Choose image'
+                onChange={(e) => setFile(e.target.files[0])}
               />
+              {loadingUpload && <Spinner />}
+              {errorUpload && <Alert variant='danger'>{errorUpload}</Alert>}
             </div>
             <div>
               <label htmlFor='category'>Category</label>
