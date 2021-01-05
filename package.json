@@ -1,0 +1,44 @@
+{
+  "name": "amazonas",
+  "version": "1.0.0",
+  "description": "Amazon like website",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon --watch server server/server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently --kill-others \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm install && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjcasti1/amazonas.git"
+  },
+  "author": "Francisco Castillo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fjcasti1/amazonas/issues"
+  },
+  "homepage": "https://github.com/fjcasti1/amazonas#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.9",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "eslint": "^7.16.0",
+    "eslint-plugin-react": "^7.21.5",
+    "nodemon": "^2.0.6"
+  },
+  "engines": {
+    "node": "14.15.4",
+    "npm": "6.14.10"
+  }
+}
