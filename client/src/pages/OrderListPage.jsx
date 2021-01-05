@@ -2,21 +2,38 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
-import { listOrders } from '../actions/orderActions';
+import { deleteOrder, listOrders } from '../actions/orderActions';
+import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
 const OrderListPage = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, error, orders } = useSelector((state) => state.orderList);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = useSelector((state) => state.orderDelete);
 
   useEffect(() => {
-    dispatch(listOrders());
-  }, [dispatch]);
+    if (successDelete) {
+      dispatch({ type: ORDER_DELETE_RESET });
+    } else {
+      dispatch(listOrders());
+    }
+  }, [dispatch, successDelete]);
+
+  const deleteHandler = (orderId) => {
+    if (window.confirm('Are you sure?')) {
+      dispatch(deleteOrder(orderId));
+    }
+  };
 
   return (
     <div>
       <h1>Orders</h1>
-      {loading ? (
+      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {loading || loadingDelete ? (
         <Spinner />
       ) : error ? (
         <Alert variant='danger'>{error}</Alert>
@@ -55,7 +72,7 @@ const OrderListPage = ({ history }) => {
                   <button
                     type='button'
                     className='small'
-                    onClick={() => console.log('delete')}
+                    onClick={() => deleteHandler(order._id)}
                   >
                     Delete
                   </button>
