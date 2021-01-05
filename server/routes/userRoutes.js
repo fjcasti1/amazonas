@@ -117,4 +117,22 @@ userRouter.get(
   }),
 );
 
+// @route     DELETE api/users/:id
+// @desc      Delete user by Id
+// @access    Private Admin
+userRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      await user.remove();
+      res.send({ message: 'User deleted' });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
 export default userRouter;
