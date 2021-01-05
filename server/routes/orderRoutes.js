@@ -119,7 +119,7 @@ orderRouter.put(
         update_time,
         email_address,
       };
-      const updatedOrder = order.save();
+      const updatedOrder = await order.save();
       res.send({ message: 'Order Paid', order: updatedOrder });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
@@ -140,6 +140,29 @@ orderRouter.delete(
     if (order) {
       await order.remove();
       res.send({ message: 'Order removed' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  }),
+);
+
+// @route     PUT api/orders/:id/deliver
+// @desc      Deliver order by Id
+// @access    Private Admin
+orderRouter.put(
+  '/:id/deliver',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const orderId = req.params.id;
+
+    const order = await Order.findById(orderId);
+
+    if (order) {
+      order.isDelivered = true;
+      order.deliveredAt = Date.now();
+      const updatedOrder = await order.save();
+      res.send({ message: 'Order Delivered', order: updatedOrder });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
     }
