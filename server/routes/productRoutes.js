@@ -2,6 +2,18 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
 import { isAdmin, isAuth } from '../utils.js';
+import multer from 'multer';
+
+const storage = multer.diskStorage({
+  destination(req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename(req, file, cb) {
+    cb(null, `${Date.now()}.jpg`);
+  },
+});
+
+const upload = multer({ storage });
 
 const productRouter = express.Router();
 
@@ -90,6 +102,19 @@ productRouter.put(
     const updatedProduct = await product.save();
     res.send({ message: 'Product Updated', product: updatedProduct });
   }),
+);
+
+// @route     POST api/products/uploadimage
+// @desc      Upload product image
+// @access    Private Admin
+productRouter.post(
+  '/uploadimage',
+  isAuth,
+  isAdmin,
+  upload.single('image'),
+  (req, res) => {
+    res.send(`/${req.file.path}`);
+  },
 );
 
 export default productRouter;
