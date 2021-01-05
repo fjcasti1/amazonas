@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAuth } from '../utils.js';
+import { isAdmin, isAuth } from '../utils.js';
 
 const orderRouter = express.Router();
 
@@ -51,6 +51,24 @@ orderRouter.get(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id });
+
+    if (orders) {
+      res.send(orders);
+    } else {
+      res.status(404).send({ message: 'Orders Not Found' });
+    }
+  }),
+);
+
+// @route     GET api/ordersid
+// @desc      Get all orders
+// @access    Private
+orderRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const orders = await Order.find({}).populate('user', 'name');
 
     if (orders) {
       res.send(orders);
