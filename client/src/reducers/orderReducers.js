@@ -3,6 +3,10 @@ import {
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_RESET,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELETE_FAIL,
+  ORDER_DELETE_REQUEST,
+  ORDER_DELETE_RESET,
+  ORDER_DELETE_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -122,7 +126,7 @@ export const orderListReducer = (state = { orders: [] }, action) => {
 
   switch (type) {
     case ORDER_LIST_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case ORDER_LIST_SUCCESS:
       return {
         loading: false,
@@ -130,9 +134,33 @@ export const orderListReducer = (state = { orders: [] }, action) => {
       };
     case ORDER_LIST_FAIL:
       return {
+        ...state,
         loading: false,
         error: payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const orderDeleteReducer = (state = {}, action) => {
+  const { type, payload } = action;
+
+  switch (type) {
+    case ORDER_DELETE_REQUEST:
+      return { loading: true };
+    case ORDER_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      };
+    case ORDER_DELETE_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
+    case ORDER_DELETE_RESET:
+      return {};
     default:
       return state;
   }
