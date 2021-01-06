@@ -20,6 +20,7 @@ import OrderListPage from './pages/OrderListPage';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
 import SellerRoute from './components/SellerRoute';
+import GuestRoute from './components/GuestRoute';
 
 const App = () => {
   return (
@@ -30,8 +31,9 @@ const App = () => {
           <Route exact path='/' component={HomePage} />
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
-          <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/register' component={RegisterPage} />
+
+          <GuestRoute exact path='/login' component={LoginPage} />
+          <GuestRoute exact path='/register' component={RegisterPage} />
 
           <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
           <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
