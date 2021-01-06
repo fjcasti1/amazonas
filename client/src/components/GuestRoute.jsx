@@ -8,7 +8,18 @@ const GuestRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => (userInfo ? <Redirect to='/' /> : <Component {...props} />)}
+      render={(props) => {
+        const redirect =
+          props.location.search && props.location.search.split('redirect=')[1];
+        return !userInfo ? (
+          <Component {...props} />
+        ) : redirect ? (
+          <Redirect to={redirect} />
+        ) : (
+          <Redirect to='/' />
+          // props.history.goBack() // Can create problems if you re-login with nother user. It keeps trying to go back until you hit an allowed route
+        );
+      }}
     ></Route>
   );
 };
