@@ -2,7 +2,7 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import bcrypt from 'bcryptjs';
 import User from '../models/userModel.js';
-import { generateToken, isAuth } from '../utils.js';
+import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
 
@@ -61,7 +61,12 @@ userRouter.get(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const user = await User.findById(userId).select(['name', 'email']);
+    const user = await User.findById(userId).select([
+      'name',
+      'email',
+      'isSeller',
+      'isAdmin',
+    ]);
     if (user) {
       res.send(user);
     } else {
@@ -93,6 +98,70 @@ userRouter.put(
         email: updatedUser.email,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
+      });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
+// @route     GET api/users
+// @desc      Get all users
+// @access    Private Admin
+userRouter.get(
+  '/',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await User.find({});
+    if (users) {
+      res.send(users);
+    } else {
+      res.status(404).send({ message: 'Users Not Found' });
+    }
+  }),
+);
+
+// @route     DELETE api/users/:id
+// @desc      Delete user by Id
+// @access    Private Admin
+userRouter.delete(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      await user.remove();
+      res.send({ message: 'User deleted' });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
+// @route     PUT api/users/:id
+// @desc      Edit user by Id
+// @access    Private Admin
+userRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      const { name, email, isSeller, isAdmin } = req.body;
+      if (name) user.name = name;
+      if (email) user.email = email;
+      user.isSeller = isSeller;
+      user.isAdmin = isAdmin;
+      const updatedUser = await user.save();
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isSeller: updatedUser.isSeller,
+        isAdmin: updatedUser.isAdmin,
       });
     } else {
       res.status(404).send({ message: 'User Not Found' });

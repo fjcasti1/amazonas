@@ -14,7 +14,7 @@ const ProfilePage = () => {
     loading: loadingUpdate,
     error: errorUpdate,
     success: successUpdate,
-  } = useSelector((state) => state.userUpdate);
+  } = useSelector((state) => state.userUpdateProfile);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

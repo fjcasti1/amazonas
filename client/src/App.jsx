@@ -17,6 +17,8 @@ import AdminRoute from './components/AdminRoute';
 import ProductListPage from './pages/ProductListPage';
 import ProductEditPage from './pages/ProductEditPage';
 import OrderListPage from './pages/OrderListPage';
+import UserListPage from './pages/UserListPage';
+import UserEditPage from './pages/UserEditPage';
 
 const App = () => {
   return (
@@ -36,6 +38,8 @@ const App = () => {
           <PrivateRoute exact path='/profile' component={ProfilePage} />
           <AdminRoute exact path='/productlist' component={ProductListPage} />
           <AdminRoute exact path='/products/:id/edit' component={ProductEditPage} />
+          <AdminRoute exact path='/userlist' component={UserListPage} />
+          <AdminRoute exact path='/users/:id/edit' component={UserEditPage} />
           <Route exact path='/login' component={LoginPage} />
           <Route exact path='/register' component={RegisterPage} />
         </main>
