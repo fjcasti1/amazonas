@@ -61,7 +61,12 @@ userRouter.get(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
-    const user = await User.findById(userId).select(['name', 'email']);
+    const user = await User.findById(userId).select([
+      'name',
+      'email',
+      'isSeller',
+      'isAdmin',
+    ]);
     if (user) {
       res.send(user);
     } else {
@@ -129,6 +134,35 @@ userRouter.delete(
     if (user) {
       await user.remove();
       res.send({ message: 'User deleted' });
+    } else {
+      res.status(404).send({ message: 'User Not Found' });
+    }
+  }),
+);
+
+// @route     PUT api/users/:id
+// @desc      Edit user by Id
+// @access    Private Admin
+userRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      const { name, email, isSeller, isAdmin } = req.body;
+      if (name) user.name = name;
+      if (email) user.email = email;
+      user.isSeller = isSeller;
+      user.isAdmin = isAdmin;
+      const updatedUser = await user.save();
+      res.send({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        isSeller: updatedUser.isSeller,
+        isAdmin: updatedUser.isAdmin,
+      });
     } else {
       res.status(404).send({ message: 'User Not Found' });
     }
