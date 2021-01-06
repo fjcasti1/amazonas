@@ -29,19 +29,21 @@ const App = () => {
           <Route exact path='/' component={HomePage} />
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
-          <Route exact path='/shipping' component={ShippingAddressPage} />
-          <Route exact path='/payment' component={PaymentMethodPage} />
-          <Route exact path='/placeorder' component={PlaceOrderPage} />
-          <Route exact path='/orders/:id' component={OrderDetailsPage} />
-          <Route exact path='/orderhistory' component={OrderHistory} />
-          <AdminRoute exact path='/orderlist' component={OrderListPage} />
+          <Route exact path='/login' component={LoginPage} />
+          <Route exact path='/register' component={RegisterPage} />
+
+          <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
+          <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
+          <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
+          <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
+          <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
+
           <AdminRoute exact path='/productlist' component={ProductListPage} />
           <AdminRoute exact path='/products/:id/edit' component={ProductEditPage} />
           <AdminRoute exact path='/userlist' component={UserListPage} />
           <AdminRoute exact path='/users/:id/edit' component={UserEditPage} />
-          <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/register' component={RegisterPage} />
+          <AdminRoute exact path='/orderlist' component={OrderListPage} />
         </main>
 
         <footer className='row center'>All rights reserverd</footer>
