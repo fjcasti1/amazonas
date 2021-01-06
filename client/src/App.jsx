@@ -19,6 +19,7 @@ import ProductEditPage from './pages/ProductEditPage';
 import OrderListPage from './pages/OrderListPage';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
+import SellerRoute from './components/SellerRoute';
 
 const App = () => {
   return (
@@ -39,11 +40,14 @@ const App = () => {
           <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
 
+          <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
+          <SellerRoute exact path='/orderlist/seller' component={OrderListPage} />
+
           <AdminRoute exact path='/productlist' component={ProductListPage} />
           <AdminRoute exact path='/products/:id/edit' component={ProductEditPage} />
+          <AdminRoute exact path='/orderlist' component={OrderListPage} />
           <AdminRoute exact path='/userlist' component={UserListPage} />
           <AdminRoute exact path='/users/:id/edit' component={UserEditPage} />
-          <AdminRoute exact path='/orderlist' component={OrderListPage} />
         </main>
 
         <footer className='row center'>All rights reserverd</footer>
