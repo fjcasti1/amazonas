@@ -101,6 +101,24 @@ const ProductPage = ({ history, match }) => {
                   )}
                 </ul>
               </div>
+              <div className='card card-body'>
+                <ul>
+                  <li className='row start'>
+                    <h3 className='m-0 mb-1'>Seller Information</h3>
+                  </li>
+                  <li>
+                    <Link to={`/seller/${product.seller._id}`}>
+                      {product.seller.seller.name}
+                    </Link>
+                  </li>
+                  <li>
+                    <Rating
+                      rating={product.seller.seller.rating}
+                      numReviews={product.seller.seller.numReviews}
+                    />
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
