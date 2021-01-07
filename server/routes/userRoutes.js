@@ -21,11 +21,12 @@ userRouter.post(
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
+          isSeller: user.isSeller,
           token: generateToken(user),
         });
       }
     }
-    res.status(401).send({ message: 'Invalic Credentials' });
+    res.status(401).send({ message: 'Invalid Credentials' });
   }),
 );
 
@@ -48,6 +49,7 @@ userRouter.post(
       name: createdUser.name,
       email: createdUser.email,
       isAdmin: createdUser.isAdmin,
+      isSeller: createdUser.isSeller,
       token: generateToken(createdUser),
     });
   }),
@@ -66,6 +68,7 @@ userRouter.get(
       'email',
       'isSeller',
       'isAdmin',
+      'seller',
     ]);
     if (user) {
       res.send(user);
@@ -83,25 +86,31 @@ userRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.user._id;
+    const { name, email, password, sellerName, sellerLogo, sellerDescription } = req.body;
+
     const user = await User.findById(userId);
-    if (user) {
-      const { name, email, password } = req.body;
-      if (name) user.name = name;
-      if (email) user.email = email;
-      if (password) {
-        user.password = bcrypt.hashSync(password, 8);
-      }
-      const updatedUser = await user.save();
-      res.send({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser),
-      });
-    } else {
-      res.status(404).send({ message: 'User Not Found' });
+    if (!user) return res.status(404).send({ message: 'User Not Found' });
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) {
+      user.password = bcrypt.hashSync(password, 8);
     }
+    if (user.isSeller) {
+      if (sellerName) user.seller.name = sellerName;
+      if (sellerLogo) user.seller.logo = sellerLogo;
+      if (sellerDescription) user.seller.description = sellerDescription;
+    }
+
+    const updatedUser = await user.save();
+    res.send({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      isSeller: updatedUser.isSeller,
+      token: generateToken(updatedUser),
+    });
   }),
 );
 
