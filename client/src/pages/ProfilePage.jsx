@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import Spinner from '../components/Spinner';
@@ -20,6 +20,9 @@ const ProfilePage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [sellerName, setSellerName] = useState('');
+  const [sellerLogo, setSellerLogo] = useState('');
+  const [sellerDescription, setSellerDescription] = useState('');
 
   useEffect(() => {
     if (!user) {
@@ -28,6 +31,11 @@ const ProfilePage = () => {
     } else {
       setName(user.name);
       setEmail(user.email);
+      if (user.isSeller && user.seller) {
+        if (user.seller.name) setSellerName(user.seller.name);
+        if (user.seller.logo) setSellerLogo(user.seller.logo);
+        if (user.seller.description) setSellerDescription(user.seller.description);
+      }
     }
   }, [dispatch, userId, user]);
 
@@ -40,7 +48,17 @@ const ProfilePage = () => {
     if (password !== confirmPassword) {
       alert('Passwords do not match');
     } else {
-      dispatch(updateUserProfile({ name, email, password }));
+      dispatch(
+        updateUserProfile({
+          name,
+          email,
+          password,
+          sellerName,
+          sellerLogo,
+          sellerDescription,
+        }),
+      );
+      dispatch(getUserDetails(userId));
     }
   };
 
@@ -96,6 +114,41 @@ const ProfilePage = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
+        {user && user.isSeller && (
+          <Fragment>
+            <h2>Seller Profile</h2>
+            <div>
+              <label htmlFor='sellerName'>Seller Name</label>
+              <input
+                type='text'
+                id='sellerName'
+                placeholder='Enter Seller Name'
+                value={sellerName}
+                onChange={(e) => setSellerName(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor='sellerLogo'>Seller Logo</label>
+              <input
+                type='text'
+                id='sellerLogo'
+                placeholder='Enter Seller Logo'
+                value={sellerLogo}
+                onChange={(e) => setSellerLogo(e.target.value)}
+              />
+            </div>
+            <div>
+              <label htmlFor='sellerDescription'>Seller Description</label>
+              <input
+                type='text'
+                id='sellerDescription'
+                placeholder='Enter Seller Description'
+                value={sellerDescription}
+                onChange={(e) => setSellerDescription(e.target.value)}
+              />
+            </div>
+          </Fragment>
+        )}
 
         <div>
           <label />
