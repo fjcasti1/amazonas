@@ -1,7 +1,9 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../actions/userActions';
+import SearchBox from './SearchBox';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,6 +20,7 @@ const Header = () => {
       <Link className='brand' to='/'>
         amazonas
       </Link>
+      <Route render={({ history }) => <SearchBox history={history} />} />
       <div>
         <Link to='/cart'>Cart</Link>
         {cartItems.length > 0 && <span className='badge'>{cartItems.length}</span>}
