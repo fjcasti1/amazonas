@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import CartPage from './pages/CartPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -23,18 +24,32 @@ import SellerRoute from './components/SellerRoute';
 import GuestRoute from './components/GuestRoute';
 import SellerPage from './pages/SellerPage';
 import SearchPage from './pages/SearchPage';
+import { listCategories } from './actions/productActions';
+import SideBar from './components/SideBar';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <div className='grid-container'>
         <Header />
+        <SideBar />
         <main>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
           <Route exact path='/seller/:id?' component={SellerPage} />
           <Route exact path='/search/name/:name?' component={SearchPage} />
+          <Route exact path='/search/category/:category' component={SearchPage} />
+          <Route
+            exact
+            path='/search/category/:category/name/:name?'
+            component={SearchPage}
+          />
 
           <GuestRoute exact path='/login' component={LoginPage} />
           <GuestRoute exact path='/register' component={RegisterPage} />
