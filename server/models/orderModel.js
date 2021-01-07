@@ -13,6 +13,11 @@ const orderSchema = new mongoose.Schema(
           ref: 'Product',
           required: true,
         },
+        seller: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product.seller',
+          required: true,
+        },
       },
     ],
     user: {
@@ -42,6 +47,7 @@ const orderSchema = new mongoose.Schema(
     isDelivered: { type: Boolean, required: true, default: false },
     paidAt: { type: Date },
     deliveredAt: { type: Date },
+    seller: { type: mongoose.Schema.Types.ObjectId },
   },
   {
     timestamps: true,
