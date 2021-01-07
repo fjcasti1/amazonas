@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
-import { isAdmin, isAuth } from '../utils.js';
+import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 import multer from 'multer';
 
 const storage = multer.diskStorage({
@@ -23,7 +23,9 @@ const productRouter = express.Router();
 productRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find({});
+    const seller = req.query.seller;
+    const sellerFilter = seller ? { seller } : {};
+    const products = await Product.find({ ...sellerFilter });
     res.json(products);
   }),
 );
@@ -49,10 +51,11 @@ productRouter.get(
 productRouter.post(
   '/',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = new Product({
       name: 'Sample name' + Date.now(),
+      seller: req.user._id,
       image: '/images/p1.jpg',
       price: 0,
       category: 'Sample category',
@@ -74,19 +77,11 @@ productRouter.post(
 productRouter.put(
   '/:id',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
     const product = await Product.findById(productId);
-    const {
-      name,
-      price,
-      image,
-      category,
-      brand,
-      countInStock,
-      description,
-    } = req.body;
+    const { name, price, image, category, brand, countInStock, description } = req.body;
 
     if (!product) {
       res.status(404).send({ message: 'Product Not Found' });
