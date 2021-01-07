@@ -5,6 +5,25 @@ import User from '../models/userModel.js';
 import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
+// @route     GET api/users/top-sellers
+// @desc      Get top sellers
+// @access    Public
+userRouter.get(
+  '/top-sellers',
+  expressAsyncHandler(async (req, res) => {
+    const topSellers = await User.find({ isSeller: true })
+      .sort({
+        'seller.rating': -1,
+      })
+      .limit(3)
+      .select('seller');
+    if (topSellers) {
+      res.send(topSellers);
+    } else {
+      res.status(404).send({ message: 'Top Sellers Not Found' });
+    }
+  }),
+);
 
 // @route     POST api/users/login
 // @desc      Log in user
