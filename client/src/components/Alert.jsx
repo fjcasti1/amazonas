@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Alert = ({ variant, children }) => {
-  return <div className={`alert alert-${variant || 'info'}`}>{children}</div>;
+const Alert = ({ variant = 'danger', children }) => {
+  return <div className={`alert alert-${variant}`}>{children}</div>;
 };
 
 export default Alert;
