@@ -1,40 +1,42 @@
 import bcrypt from 'bcryptjs';
+import mongoose from 'mongoose';
+
 const data = {
   users: [
     {
-      name: 'Admin',
-      email: 'admin@example.com',
-      password: bcrypt.hashSync('1234', 8),
+      name: 'Kiko',
+      email: 'kiko@gmail.com',
+      password: bcrypt.hashSync('12', 8),
+      isSeller: true,
       isAdmin: true,
-      isSeller: false,
     },
     {
       name: 'John',
       email: 'john@example.com',
       password: bcrypt.hashSync('1234', 8),
-      isAdmin: false,
       isSeller: true,
+      isAdmin: false,
     },
     {
       name: 'Jane',
       email: 'jane@example.com',
       password: bcrypt.hashSync('1234', 8),
+      isSeller: true,
       isAdmin: false,
-      isSeller: false,
     },
     {
       name: 'Kevin',
       email: 'kevin@example.com',
       password: bcrypt.hashSync('1234', 8),
+      isSeller: false,
       isAdmin: false,
-      isSeller: true,
     },
     {
       name: 'Mark',
       email: 'mark@example.com',
       password: bcrypt.hashSync('1234', 8),
-      isAdmin: false,
       isSeller: false,
+      isAdmin: false,
     },
   ],
   products: [
@@ -48,6 +50,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9a'),
     },
     {
       name: 'Adidas Fit Shirt',
@@ -59,6 +62,7 @@ const data = {
       rating: 4.0,
       numReviews: 10,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9a'),
     },
     {
       name: 'Lacoste Free Shirt',
@@ -70,6 +74,7 @@ const data = {
       rating: 2.8,
       numReviews: 17,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9b'),
     },
     {
       name: 'Nike Slim Pant',
@@ -81,6 +86,7 @@ const data = {
       rating: 4.5,
       numReviews: 14,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9b'),
     },
     {
       name: 'Puma Slim Pant',
@@ -92,6 +98,7 @@ const data = {
       rating: 4.5,
       numReviews: 10,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9c'),
     },
     {
       name: 'Adidas Fit Pant',
@@ -103,6 +110,7 @@ const data = {
       rating: 3.5,
       numReviews: 15,
       description: 'high quality product',
+      seller: mongoose.Types.ObjectId('5ff6045d3ed3bc60e3fb4f9a'),
     },
   ],
 };
