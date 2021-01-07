@@ -8,14 +8,15 @@ import {
 
 export const addToCart = (product, qty) => async (dispatch, getState) => {
   try {
-    const { name, image, price, countInStock, _id } = product;
+    const { name, image, price, countInStock, seller, _id } = product;
     const cartItem = {
       name,
       image,
       price,
-      countInStock,
-      product: _id,
       qty,
+      countInStock,
+      seller,
+      product: _id,
     };
     dispatch({
       type: CART_ADD_ITEM,
