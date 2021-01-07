@@ -33,7 +33,7 @@ const HomePage = () => {
       ) : sellers.length === 0 ? (
         <Alert variant='info'>No Sellers Found</Alert>
       ) : (
-        <Carousel showArrows autoPlay infiniteLoop>
+        <Carousel showArrows autoPlay infiniteLoop showThumbs={false}>
           {sellers.map((seller) => (
             <div key={seller._id}>
               <Link to={`/seller/${seller._id}`}>
