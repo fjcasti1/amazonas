@@ -17,10 +17,10 @@ import {
   PRODUCT_DELETE_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = () => async (dispatch) => {
+export const listProducts = ({ seller = '' }) => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
-    const res = await axios.get('/api/products');
+    const res = await axios.get(`/api/products?seller=${seller}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: res.data,
@@ -61,7 +61,7 @@ export const createProduct = () => async (dispatch, getState) => {
         authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.post('api/products', {}, config);
+    const { data } = await axios.post('/api/products', {}, config);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -87,11 +87,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.put(
-      `/api/products/${product._id}`,
-      product,
-      config,
-    );
+    const { data } = await axios.put(`/api/products/${product._id}`, product, config);
 
     dispatch({
       type: PRODUCT_UPDATE_SUCCESS,
