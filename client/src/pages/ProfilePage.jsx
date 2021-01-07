@@ -69,11 +69,9 @@ const ProfilePage = () => {
           <h1>User Profile</h1>
         </div>
         {loading || (loadingUpdate && <Spinner />)}
-        {error && <Alert variant='danger'>{error}</Alert>}
-        {errorUpdate && <Alert variant='danger'>{errorUpdate}</Alert>}
-        {successUpdate && (
-          <Alert variant='success'>Profile Updated Successfully</Alert>
-        )}
+        {error && <Alert>{error}</Alert>}
+        {errorUpdate && <Alert>{errorUpdate}</Alert>}
+        {successUpdate && <Alert variant='success'>Profile Updated Successfully</Alert>}
         <div>
           <label htmlFor='name'>Name</label>
           <input

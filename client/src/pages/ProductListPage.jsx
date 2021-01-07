@@ -63,12 +63,12 @@ const ProductListPage = ({ match, history }) => {
         </button>
       </div>
       {loadingCreate || (loadingDelete && <Spinner />)}
-      {errorCreate && <Alert variant='danger'>{errorCreate}</Alert>}
-      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {errorCreate && <Alert>{errorCreate}</Alert>}
+      {errorDelete && <Alert>{errorDelete}</Alert>}
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>

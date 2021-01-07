@@ -37,12 +37,12 @@ const UserListPage = ({ history }) => {
       <div className='row'>
         <h1>Users</h1>
       </div>
-      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {errorDelete && <Alert>{errorDelete}</Alert>}
       {successDelete && <Alert variant='success'>User Deleted Successfully</Alert>}
       {loading || loadingDelete ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>

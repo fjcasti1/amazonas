@@ -18,7 +18,7 @@ const OrderHistory = ({ history }) => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>
@@ -38,9 +38,7 @@ const OrderHistory = ({ history }) => {
                 <td>{order.createdAt}</td>
                 <td>${order.totalPrice.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                <td>
-                  {order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}
-                </td>
+                <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}</td>
                 <td>
                   <button
                     type='button'

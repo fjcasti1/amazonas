@@ -28,7 +28,7 @@ const SellerPage = ({ match }) => {
         {loading ? (
           <Spinner />
         ) : error ? (
-          <Alert variant='danger'>{error}</Alert>
+          <Alert>{error}</Alert>
         ) : (
           <ul className='card card-body'>
             <li>
@@ -55,7 +55,7 @@ const SellerPage = ({ match }) => {
         {loadingProducts ? (
           <Spinner />
         ) : errorProducts ? (
-          <Alert variant='danger'>{errorProducts}</Alert>
+          <Alert>{errorProducts}</Alert>
         ) : products.length === 0 ? (
           <Alert variant='info'>No Products Found</Alert>
         ) : (

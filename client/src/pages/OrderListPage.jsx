@@ -34,11 +34,11 @@ const OrderListPage = ({ history, match }) => {
   return (
     <div>
       <h1>Orders</h1>
-      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {errorDelete && <Alert>{errorDelete}</Alert>}
       {loading || loadingDelete ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>

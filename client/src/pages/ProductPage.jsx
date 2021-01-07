@@ -29,7 +29,7 @@ const ProductPage = ({ history, match }) => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <div>
           <Link to='/'>Go Back</Link>

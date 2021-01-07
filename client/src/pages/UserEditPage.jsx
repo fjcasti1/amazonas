@@ -58,12 +58,12 @@ const UserEditPage = ({ match, history }) => {
           <h1>Edit User {name}</h1>
         </div>
         {successUpdate && <Alert variant='success'>User Updated Successfully</Alert>}
-        {errorUpdate && <Alert variant='danger'>{errorUpdate}</Alert>}
+        {errorUpdate && <Alert>{errorUpdate}</Alert>}
         {loadingUpdate && <Spinner />}
         {loading ? (
           <Spinner />
         ) : error ? (
-          <Alert variant='danger'>{error}</Alert>
+          <Alert>{error}</Alert>
         ) : (
           <Fragment>
             <div>

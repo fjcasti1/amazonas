@@ -28,7 +28,7 @@ const LoginPage = ({ location }) => {
           <h1>Sign In</h1>
         </div>
         {loading && <Spinner />}
-        {error && <Alert variant='danger'>{error}</Alert>}
+        {error && <Alert>{error}</Alert>}
         <div>
           <label htmlFor='email'>Email address</label>
           <input

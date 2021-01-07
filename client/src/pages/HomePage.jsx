@@ -21,7 +21,7 @@ const HomePage = () => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <div className='row center'>
           {products.map((product) => (

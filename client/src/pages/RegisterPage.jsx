@@ -34,7 +34,7 @@ const RegisterPage = ({ location }) => {
           <h1>Create an account</h1>
         </div>
         {loading && <Spinner />}
-        {error && <Alert variant='danger'>{error}</Alert>}
+        {error && <Alert>{error}</Alert>}
         <div>
           <label htmlFor='name'>Name</label>
           <input
