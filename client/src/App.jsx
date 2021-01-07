@@ -22,6 +22,7 @@ import UserEditPage from './pages/UserEditPage';
 import SellerRoute from './components/SellerRoute';
 import GuestRoute from './components/GuestRoute';
 import SellerPage from './pages/SellerPage';
+import SearchPage from './pages/SearchPage';
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
           <Route exact path='/seller/:id?' component={SellerPage} />
+          <Route exact path='/search/name/:name?' component={SearchPage} />
 
           <GuestRoute exact path='/login' component={LoginPage} />
           <GuestRoute exact path='/register' component={RegisterPage} />
