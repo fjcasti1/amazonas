@@ -1,7 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
-import { isAdmin, isAuth } from '../utils.js';
+import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
 
 const orderRouter = express.Router();
 
@@ -60,15 +60,22 @@ orderRouter.get(
   }),
 );
 
-// @route     GET api/ordersid
+// @route     GET api/orders
 // @desc      Get all orders
 // @access    Private
 orderRouter.get(
   '/',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({}).populate('user', 'name');
+    const seller = req.query.seller;
+    const sellerFilter = seller
+      ? {
+          orderItems: { $elemMatch: { seller } },
+        }
+      : {};
+
+    const orders = await Order.find({ ...sellerFilter }).populate('user', 'name');
 
     if (orders) {
       res.send(orders);
