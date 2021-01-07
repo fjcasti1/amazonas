@@ -23,19 +23,35 @@ const productRouter = express.Router();
 productRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
-    const name = req.query.name;
-    const seller = req.query.seller;
+    const { name, category, seller } = req.query;
+
     const nameFilter = name
       ? {
           name: { $regex: name, $options: 'i' },
         }
       : {};
+    const categoryFilter = category ? { category } : {};
     const sellerFilter = seller ? { seller } : {};
-    const products = await Product.find({ ...nameFilter, ...sellerFilter }).populate(
-      'seller',
-      'seller.name seller.logo',
-    );
-    res.json(products);
+
+    const products = await Product.find({
+      ...nameFilter,
+      ...categoryFilter,
+      ...sellerFilter,
+    }).populate('seller', 'seller.name seller.logo');
+
+    res.send(products);
+  }),
+);
+
+// @route     GET api/products/categories
+// @desc      Get all product categories
+// @access    Public
+productRouter.get(
+  '/categories',
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find().distinct('category');
+    if (!categories) return res.status(404).send({ message: 'Categories Not Found' });
+    res.send(categories);
   }),
 );
 
