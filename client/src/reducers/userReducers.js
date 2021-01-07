@@ -24,6 +24,9 @@ import {
   USER_UPDATE_SUCCESS,
   USER_UPDATE_FAIL,
   USER_UPDATE_RESET,
+  USER_TOPSELLERS_LIST_REQUEST,
+  USER_TOPSELLERS_LIST_SUCCESS,
+  USER_TOPSELLERS_LIST_FAIL,
 } from '../constants/userConstants';
 
 const userAuthInitialState = {
@@ -179,6 +182,28 @@ export const userUpdateReducer = (state = {}, action) => {
       };
     case USER_UPDATE_RESET:
       return {};
+    default:
+      return state;
+  }
+};
+
+export const userTopSellersListReducer = (state = { loading: true }, action) => {
+  const { type, payload } = action;
+  switch (type) {
+    case USER_TOPSELLERS_LIST_REQUEST:
+      return {
+        loading: true,
+      };
+    case USER_TOPSELLERS_LIST_SUCCESS:
+      return {
+        loading: false,
+        users: payload,
+      };
+    case USER_TOPSELLERS_LIST_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      };
     default:
       return state;
   }
