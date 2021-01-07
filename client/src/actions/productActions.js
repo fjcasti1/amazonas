@@ -15,12 +15,35 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } from '../constants/productConstants';
 
-export const listProducts = ({ seller = '', name = '' }) => async (dispatch) => {
+export const listCategories = () => async (dispatch) => {
+  dispatch({ type: PRODUCT_CATEGORY_LIST_REQUEST });
+  try {
+    const res = await axios.get(`/api/products/categories`);
+    dispatch({
+      type: PRODUCT_CATEGORY_LIST_SUCCESS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CATEGORY_LIST_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export const listProducts = ({ seller = '', name = '', category = '' }) => async (
+  dispatch,
+) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
   try {
-    const res = await axios.get(`/api/products?seller=${seller}&name=${name}`);
+    const res = await axios.get(
+      `/api/products?seller=${seller}&name=${name}&category=${category}`,
+    );
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: res.data,
