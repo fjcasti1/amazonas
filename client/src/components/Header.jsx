@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../actions/userActions';
 import SearchBox from './SearchBox';
+import { openSidebar } from '../actions/layoutActions';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -17,9 +18,18 @@ const Header = () => {
 
   return (
     <header className='row'>
-      <Link className='brand' to='/'>
-        amazonas
-      </Link>
+      <div>
+        <button
+          type='button'
+          className='open-sidebar'
+          onClick={() => dispatch(openSidebar())}
+        >
+          <i className='fa fa-bars'></i>
+        </button>
+        <Link className='brand' to='/'>
+          amazonas
+        </Link>
+      </div>
       <Route render={({ history }) => <SearchBox history={history} />} />
       <div>
         <Link to='/cart'>Cart</Link>
