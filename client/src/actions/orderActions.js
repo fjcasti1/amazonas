@@ -148,7 +148,6 @@ export const listOrders = ({ seller = '' }) => async (dispatch, getState) => {
         authorization: `Bearer ${token}`,
       },
     };
-    console.log(seller);
     const { data } = await axios.get(`/api/orders?seller=${seller}`, config);
 
     dispatch({
