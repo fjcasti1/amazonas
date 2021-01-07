@@ -57,10 +57,9 @@ userRouter.post(
 
 // @route     GET api/users/:id
 // @desc      Get user by Id
-// @access    Private
+// @access    Public
 userRouter.get(
   '/:id',
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const user = await User.findById(userId).select([

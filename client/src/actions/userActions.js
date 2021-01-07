@@ -92,13 +92,7 @@ export const logout = () => async (dispatch) => {
 export const getUserDetails = (userId) => async (dispatch, getState) => {
   dispatch({ type: USER_DETAILS_REQUEST });
   try {
-    const token = getState().userAuth.userInfo.token;
-    const config = {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await axios.get(`/api/users/${userId}`, config);
+    const { data } = await axios.get(`/api/users/${userId}`);
     dispatch({
       type: USER_DETAILS_SUCCESS,
       payload: data,
