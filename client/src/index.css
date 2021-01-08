@@ -68,6 +68,10 @@ h2 {
   font-size: 1.6rem;
   padding: 1rem 0;
 }
+h3 {
+  font-size: 1.4rem;
+  padding: 1rem 0;
+}
 a {
   text-decoration: none;
 }
@@ -118,7 +122,7 @@ button.small {
 }
 
 /* Header */
-header a {
+header a:not(.search) {
   color: var(--white);
   padding: 1rem;
 }
@@ -174,9 +178,11 @@ aside li {
   padding: 1rem;
 }
 
-button.close-sidebar {
+button.close-sidebar,
+button.close-sidebar:hover,
+button.close-sidebar:focus {
   padding: 0.3rem 0.8rem;
-  border: none;
+  border: none !important;
 }
 
 /* GRID */
@@ -375,4 +381,16 @@ img.large {
   border-radius: 0 0.5rem 0.5rem 0;
   border-left: none;
   margin-left: 0rem;
+}
+
+.active {
+  font-weight: bold;
+}
+
+/* Filter Menu (Search Page) */
+
+/* .filter-menu { } */
+
+li.filter-option {
+  margin: 0 0 0.5rem 0;
 }
