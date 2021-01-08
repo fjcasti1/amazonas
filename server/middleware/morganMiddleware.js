@@ -1,7 +1,7 @@
 import morgan from 'morgan';
 import chalk from 'chalk'; // or you can use the require('chalk') syntax too
 
-export const morganMiddleware = morgan(function (tokens, req, res) {
+const morganMiddleware = morgan(function (tokens, req, res) {
   const method = tokens.method(req, res);
   let methodColor = '#ffffff';
   if (method === 'GET') {
@@ -25,3 +25,5 @@ export const morganMiddleware = morgan(function (tokens, req, res) {
     // chalk.hex('#f78fb3').bold('@ ' + tokens.date(req, res)),
   ].join(' ');
 });
+
+export default morganMiddleware;
