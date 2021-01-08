@@ -7,7 +7,6 @@ export const openSidebar = () => async (dispatch) => {
 };
 
 export const closeSideBar = () => async (dispatch) => {
-  console.log('actions');
   dispatch({
     type: SIDEBAR_CLOSE,
   });
