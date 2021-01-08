@@ -23,22 +23,40 @@ const productRouter = express.Router();
 productRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
-    const { name, category, seller } = req.query;
+    const { name, category, seller, min, max, rating, order } = req.query;
 
-    const nameFilter = name
-      ? {
-          name: { $regex: name, $options: 'i' },
-        }
-      : {};
-    const categoryFilter = category ? { category } : {};
-    const sellerFilter = seller ? { seller } : {};
+    const nameFilter = name && { name: { $regex: name, $options: 'i' } };
+
+    const priceFilter = min && max && { price: { $gte: min, $lte: max } };
+
+    const ratingFilter = rating && { rating: { $gte: rating } };
+
+    const categoryFilter = category && { category };
+
+    const sellerFilter = seller && { seller };
+
+    const sortOrder =
+      order === 'newest'
+        ? { _id: -1 }
+        : order === 'lowest'
+        ? { price: 1 }
+        : order === 'highest'
+        ? { price: -1 }
+        : order === 'rating'
+        ? { rating: -1 }
+        : { _id: -1 }; // Sorted by newwet arrivals by default
 
     const products = await Product.find({
       ...nameFilter,
       ...categoryFilter,
       ...sellerFilter,
-    }).populate('seller', 'seller.name seller.logo');
+      ...priceFilter,
+      ...ratingFilter,
+    })
+      .populate('seller', 'seller.name seller.logo')
+      .sort(sortOrder);
 
+    console.log(sortOrder);
     res.send(products);
   }),
 );

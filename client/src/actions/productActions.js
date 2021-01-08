@@ -19,6 +19,7 @@ import {
   PRODUCT_CATEGORY_LIST_SUCCESS,
   PRODUCT_CATEGORY_LIST_FAIL,
 } from '../constants/productConstants';
+import { getSearchQuery } from '../utils/functions';
 
 export const listCategories = () => async (dispatch) => {
   dispatch({ type: PRODUCT_CATEGORY_LIST_REQUEST });
@@ -36,14 +37,11 @@ export const listCategories = () => async (dispatch) => {
   }
 };
 
-export const listProducts = ({ seller = '', name = '', category = '' }) => async (
-  dispatch,
-) => {
+export const listProducts = (filterObj) => async (dispatch) => {
   dispatch({ type: PRODUCT_LIST_REQUEST });
+  const searchQuery = getSearchQuery(filterObj);
   try {
-    const res = await axios.get(
-      `/api/products?seller=${seller}&name=${name}&category=${category}`,
-    );
+    const res = await axios.get(`/api/products?${searchQuery}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: res.data,
