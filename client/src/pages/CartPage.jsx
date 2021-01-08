@@ -21,7 +21,7 @@ const CartPage = ({ history }) => {
       <div className='col-2'>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
-          <Alert>
+          <Alert variant='info'>
             Cart is empty. <Link to='/'>Go Shopping</Link>
           </Alert>
         ) : (
