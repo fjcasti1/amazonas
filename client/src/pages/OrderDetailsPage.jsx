@@ -60,7 +60,7 @@ const OrderDetailsPage = ({ match }) => {
   return loading ? (
     <Spinner />
   ) : error ? (
-    <Alert variant='danger'>{error}</Alert>
+    <Alert>{error}</Alert>
   ) : (
     <div>
       <h1>Order {order._id}</h1>
@@ -81,7 +81,7 @@ const OrderDetailsPage = ({ match }) => {
                 {order.isDelivered ? (
                   <Alert variant='success'>Delivered on {order.deliveredAt}</Alert>
                 ) : (
-                  <Alert variant='danger'>Not delivered</Alert>
+                  <Alert>Not delivered</Alert>
                 )}
               </div>
             </li>
@@ -95,7 +95,7 @@ const OrderDetailsPage = ({ match }) => {
                 {order.isPaid ? (
                   <Alert variant='success'>Paid on {order.paidAt}</Alert>
                 ) : (
-                  <Alert variant='danger'>Not paid</Alert>
+                  <Alert>Not paid</Alert>
                 )}
               </div>
             </li>
@@ -163,7 +163,7 @@ const OrderDetailsPage = ({ match }) => {
                     <Spinner />
                   ) : (
                     <Fragment>
-                      {errorPay && <Alert variant='danger'>{errorPay}</Alert>}
+                      {errorPay && <Alert>{errorPay}</Alert>}
                       <PayPalButton
                         amount={order.totalPrice}
                         onSuccess={successPaymentHandler}
@@ -178,9 +178,7 @@ const OrderDetailsPage = ({ match }) => {
                     <Spinner />
                   ) : (
                     <Fragment>
-                      {errorDeliver && (
-                        <Alert variant='danger'>{errorDeliver}</Alert>
-                      )}
+                      {errorDeliver && <Alert>{errorDeliver}</Alert>}
                       <button
                         className='primary block'
                         onClick={() => dispatch(deliverOrder(order._id))}

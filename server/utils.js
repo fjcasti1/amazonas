@@ -1,12 +1,13 @@
 import jwt from 'jsonwebtoken';
 
-export const generateToken = ({ _id, name, email, isAdmin }) => {
+export const generateToken = ({ _id, name, email, isAdmin, isSeller }) => {
   return jwt.sign(
     {
       _id,
       name,
       email,
       isAdmin,
+      isSeller,
     },
     process.env.JWT_SECRET,
     {
@@ -38,5 +39,21 @@ export const isAdmin = (req, res, next) => {
     next();
   } else {
     res.status(401).send({ message: 'Invalid Admin token' });
+  }
+};
+
+export const isSeller = (req, res, next) => {
+  if (req.user && req.user.isSeller) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Seller token' });
+  }
+};
+
+export const isSellerOrAdmin = (req, res, next) => {
+  if (req.user && (req.user.isSeller || req.user.isAdmin)) {
+    next();
+  } else {
+    res.status(401).send({ message: 'Invalid Seller/Admin token' });
   }
 };

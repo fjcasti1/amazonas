@@ -103,11 +103,11 @@ const ProductEditPage = ({ match, history }) => {
           <h1>Edit Product {productId}</h1>
         </div>
         {loadingUpdate && <Spinner />}
-        {errorUpdate && <Alert variant='danger'>{errorUpdate}</Alert>}
+        {errorUpdate && <Alert>{errorUpdate}</Alert>}
         {loading ? (
           <Spinner />
         ) : error ? (
-          <Alert variant='danger'>{error}</Alert>
+          <Alert>{error}</Alert>
         ) : (
           <Fragment>
             <div>
@@ -141,7 +141,7 @@ const ProductEditPage = ({ match, history }) => {
                 onChange={(e) => setFile(e.target.files[0])}
               />
               {loadingUpload && <Spinner />}
-              {errorUpload && <Alert variant='danger'>{errorUpload}</Alert>}
+              {errorUpload && <Alert>{errorUpload}</Alert>}
             </div>
             <div>
               <label htmlFor='category'>Category</label>

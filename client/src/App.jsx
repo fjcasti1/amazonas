@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import CartPage from './pages/CartPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -19,29 +20,49 @@ import ProductEditPage from './pages/ProductEditPage';
 import OrderListPage from './pages/OrderListPage';
 import UserListPage from './pages/UserListPage';
 import UserEditPage from './pages/UserEditPage';
+import SellerRoute from './components/SellerRoute';
+import GuestRoute from './components/GuestRoute';
+import SellerPage from './pages/SellerPage';
+import { listCategories } from './actions/productActions';
+import SideBar from './components/SideBar';
+import SearchPage from './pages/SearchPage';
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(listCategories());
+  }, [dispatch]);
   return (
     <BrowserRouter>
       <div className='grid-container'>
         <Header />
+        <SideBar />
         <main>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
-          <Route exact path='/shipping' component={ShippingAddressPage} />
-          <Route exact path='/payment' component={PaymentMethodPage} />
-          <Route exact path='/placeorder' component={PlaceOrderPage} />
-          <Route exact path='/orders/:id' component={OrderDetailsPage} />
-          <Route exact path='/orderhistory' component={OrderHistory} />
-          <AdminRoute exact path='/orderlist' component={OrderListPage} />
+          <Route exact path='/seller/:id?' component={SellerPage} />
+          <Route path='/search' component={SearchPage} />
+
+          <GuestRoute exact path='/login' component={LoginPage} />
+          <GuestRoute exact path='/register' component={RegisterPage} />
+
+          <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
+          <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
+          <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
+          <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
+          <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
+
+          <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
+          <SellerRoute exact path='/orderlist/seller' component={OrderListPage} />
+
           <AdminRoute exact path='/productlist' component={ProductListPage} />
           <AdminRoute exact path='/products/:id/edit' component={ProductEditPage} />
+          <AdminRoute exact path='/orderlist' component={OrderListPage} />
           <AdminRoute exact path='/userlist' component={UserListPage} />
           <AdminRoute exact path='/users/:id/edit' component={UserEditPage} />
-          <Route exact path='/login' component={LoginPage} />
-          <Route exact path='/register' component={RegisterPage} />
         </main>
 
         <footer className='row center'>All rights reserverd</footer>

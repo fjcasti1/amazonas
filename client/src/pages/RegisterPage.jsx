@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { register } from '../actions/userActions';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
 
-const RegisterPage = ({ history, location }) => {
+const RegisterPage = ({ location }) => {
   const dispatch = useDispatch();
 
   const userAuth = useSelector((state) => state.userAuth);
-  const { loading, userInfo, error } = userAuth;
+  const { loading, error } = userAuth;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const redirect = location.search ? location.search.split('=')[1] : '/';
+  const redirect = location.search && location.search.split('=')[1];
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -27,12 +27,6 @@ const RegisterPage = ({ history, location }) => {
     }
   };
 
-  useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
-    }
-  }, [history, userInfo, redirect]);
-
   return (
     <div>
       <form className='form' onSubmit={submitHandler}>
@@ -40,7 +34,7 @@ const RegisterPage = ({ history, location }) => {
           <h1>Create an account</h1>
         </div>
         {loading && <Spinner />}
-        {error && <Alert variant='danger'>{error}</Alert>}
+        {error && <Alert>{error}</Alert>}
         <div>
           <label htmlFor='name'>Name</label>
           <input

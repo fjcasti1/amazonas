@@ -5,9 +5,11 @@ import Alert from '../components/Alert';
 import { deleteOrder, listOrders } from '../actions/orderActions';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
 
-const OrderListPage = ({ history }) => {
+const OrderListPage = ({ history, match }) => {
+  const sellerMode = match.path.indexOf('/seller') >= 0;
   const dispatch = useDispatch();
 
+  const userId = useSelector((state) => state.userAuth.userInfo._id);
   const { loading, error, orders } = useSelector((state) => state.orderList);
   const {
     loading: loadingDelete,
@@ -19,9 +21,9 @@ const OrderListPage = ({ history }) => {
     if (successDelete) {
       dispatch({ type: ORDER_DELETE_RESET });
     } else {
-      dispatch(listOrders());
+      dispatch(listOrders({ seller: sellerMode ? userId : '' }));
     }
-  }, [dispatch, successDelete]);
+  }, [dispatch, sellerMode, successDelete, userId]);
 
   const deleteHandler = (orderId) => {
     if (window.confirm('Are you sure?')) {
@@ -32,11 +34,11 @@ const OrderListPage = ({ history }) => {
   return (
     <div>
       <h1>Orders</h1>
-      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {errorDelete && <Alert>{errorDelete}</Alert>}
       {loading || loadingDelete ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>
@@ -58,9 +60,7 @@ const OrderListPage = ({ history }) => {
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>${order.totalPrice.toFixed(2)}</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                <td>
-                  {order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}
-                </td>
+                <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}</td>
                 <td>
                   <button
                     type='button'

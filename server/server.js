@@ -7,6 +7,7 @@ import productRouter from './routes/productRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import path from 'path';
+import { morganMiddleware } from './middleware/morganMiddleware.js';
 
 const app = express();
 app.use(express.json());
@@ -17,6 +18,11 @@ dotenv.config();
 
 // Connect database
 connectDB();
+
+// Loggin if in development mode
+if (process.env.MODE === 'development') {
+  app.use(morganMiddleware);
+}
 
 const PORT = process.env.PORT || 5000;
 
@@ -46,7 +52,6 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(
-    `Server running in ${process.env.MODE} mode on port ${PORT}`.yellow.bold
-      .underline,
+    `Server running in ${process.env.MODE} mode on port ${PORT}`.yellow.bold.underline,
   );
 });

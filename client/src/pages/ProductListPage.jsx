@@ -1,10 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  createProduct,
-  deleteProduct,
-  listProducts,
-} from '../actions/productActions';
+import { createProduct, deleteProduct, listProducts } from '../actions/productActions';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
 import {
@@ -12,9 +8,14 @@ import {
   PRODUCT_DELETE_RESET,
 } from '../constants/productConstants';
 
-const ProductListPage = ({ history }) => {
+const ProductListPage = ({ match, history }) => {
+  const sellerMode = match.path.indexOf('/seller') >= 0;
+
   const dispatch = useDispatch();
+
   const { loading, error, products } = useSelector((state) => state.productList);
+
+  const userId = useSelector((state) => state.userAuth.userInfo._id);
   const {
     loading: loadingCreate,
     error: errorCreate,
@@ -30,14 +31,22 @@ const ProductListPage = ({ history }) => {
   useEffect(() => {
     if (successCreate) {
       dispatch({ type: PRODUCT_CREATE_RESET });
-      history.push(`products/${createdProduct._id}/edit`);
+      history.push(`/products/${createdProduct._id}/edit`);
     }
     if (successDelete) {
       dispatch({ type: PRODUCT_DELETE_RESET });
       dispatch({ type: PRODUCT_CREATE_RESET });
     }
-    dispatch(listProducts());
-  }, [dispatch, history, successCreate, createdProduct, successDelete]);
+    dispatch(listProducts({ seller: sellerMode ? userId : '' }));
+  }, [
+    dispatch,
+    history,
+    successCreate,
+    createdProduct,
+    successDelete,
+    sellerMode,
+    userId,
+  ]);
 
   const deleteHandler = (productId) => {
     if (window.confirm('Are you sure?')) {
@@ -54,12 +63,12 @@ const ProductListPage = ({ history }) => {
         </button>
       </div>
       {loadingCreate || (loadingDelete && <Spinner />)}
-      {errorCreate && <Alert variant='danger'>{errorCreate}</Alert>}
-      {errorDelete && <Alert variant='danger'>{errorDelete}</Alert>}
+      {errorCreate && <Alert>{errorCreate}</Alert>}
+      {errorDelete && <Alert>{errorDelete}</Alert>}
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <table className='table'>
           <thead>

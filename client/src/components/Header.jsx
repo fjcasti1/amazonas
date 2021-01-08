@@ -1,7 +1,10 @@
 import React from 'react';
+import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../actions/userActions';
+import SearchBox from './SearchBox';
+import { openSidebar } from '../actions/layoutActions';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -15,9 +18,19 @@ const Header = () => {
 
   return (
     <header className='row'>
-      <Link className='brand' to='/'>
-        amazonas
-      </Link>
+      <div>
+        <button
+          type='button'
+          className='open-sidebar'
+          onClick={() => dispatch(openSidebar())}
+        >
+          <i className='fa fa-bars'></i>
+        </button>
+        <Link className='brand' to='/'>
+          amazonas
+        </Link>
+      </div>
+      <Route render={({ history }) => <SearchBox history={history} />} />
       <div>
         <Link to='/cart'>Cart</Link>
         {cartItems.length > 0 && <span className='badge'>{cartItems.length}</span>}
@@ -42,6 +55,21 @@ const Header = () => {
           </div>
         ) : (
           <Link to='/login'>Sign In</Link>
+        )}
+        {userInfo && userInfo.isSeller && (
+          <div className='dropdown'>
+            <Link to='#'>
+              Seller <i className='fa fa-caret-down'></i>{' '}
+            </Link>
+            <ul className='dropdown-content'>
+              <li>
+                <Link to='/productlist/seller'>Products</Link>
+              </li>
+              <li>
+                <Link to='/orderlist/seller'>Orders</Link>
+              </li>
+            </ul>
+          </div>
         )}
         {userInfo && userInfo.isAdmin && (
           <div className='dropdown'>

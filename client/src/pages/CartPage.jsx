@@ -12,7 +12,7 @@ const CartPage = ({ history }) => {
   const removeFromCartHandler = (productId) => {
     dispatch(removeFromCart(productId));
   };
-  const checkoutHandler = (productId) => {
+  const checkoutHandler = () => {
     history.push('/login?redirect=shipping');
   };
 
@@ -21,7 +21,7 @@ const CartPage = ({ history }) => {
       <div className='col-2'>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
-          <Alert>
+          <Alert variant='info'>
             Cart is empty. <Link to='/'>Go Shopping</Link>
           </Alert>
         ) : (
@@ -39,9 +39,7 @@ const CartPage = ({ history }) => {
                     <select
                       value={item.qty}
                       onChange={(e) =>
-                        dispatch(
-                          changeProductQty(item.product, Number(e.target.value)),
-                        )
+                        dispatch(changeProductQty(item.product, Number(e.target.value)))
                       }
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
@@ -71,8 +69,8 @@ const CartPage = ({ history }) => {
           <ul>
             <li>
               <h2>
-                Subtotal ({cartItems.reduce((acc, curr) => acc + curr.qty, 0)} items)
-                : ${cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)}
+                Subtotal ({cartItems.reduce((acc, curr) => acc + curr.qty, 0)} items) : $
+                {cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0)}
               </h2>
             </li>
             <li>

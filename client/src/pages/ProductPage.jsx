@@ -7,7 +7,7 @@ import Alert from '../components/Alert';
 import { detailsProduct } from '../actions/productActions';
 import { addToCart } from '../actions/cartActions';
 
-const ProductPage = ({ match }) => {
+const ProductPage = ({ history, match }) => {
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
@@ -18,6 +18,7 @@ const ProductPage = ({ match }) => {
 
   const addToCartHandler = () => {
     dispatch(addToCart(product, qty));
+    history.push('/');
   };
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const ProductPage = ({ match }) => {
       {loading ? (
         <Spinner />
       ) : error ? (
-        <Alert variant='danger'>{error}</Alert>
+        <Alert>{error}</Alert>
       ) : (
         <div>
           <Link to='/'>Go Back</Link>
@@ -98,6 +99,24 @@ const ProductPage = ({ match }) => {
                       </li>
                     </Fragment>
                   )}
+                </ul>
+              </div>
+              <div className='card card-body'>
+                <ul>
+                  <li className='row start'>
+                    <h3 className='m-0 mb-1'>Seller Information</h3>
+                  </li>
+                  <li>
+                    <Link to={`/seller/${product.seller._id}`}>
+                      {product.seller.seller.name}
+                    </Link>
+                  </li>
+                  <li>
+                    <Rating
+                      rating={product.seller.seller.rating}
+                      numReviews={product.seller.seller.numReviews}
+                    />
+                  </li>
                 </ul>
               </div>
             </div>

@@ -15,12 +15,33 @@ import {
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
   PRODUCT_DELETE_FAIL,
+  PRODUCT_CATEGORY_LIST_REQUEST,
+  PRODUCT_CATEGORY_LIST_SUCCESS,
+  PRODUCT_CATEGORY_LIST_FAIL,
 } from '../constants/productConstants';
+import { getSearchQuery } from '../utils/functions';
 
-export const listProducts = () => async (dispatch) => {
-  dispatch({ type: PRODUCT_LIST_REQUEST });
+export const listCategories = () => async (dispatch) => {
+  dispatch({ type: PRODUCT_CATEGORY_LIST_REQUEST });
   try {
-    const res = await axios.get('/api/products');
+    const res = await axios.get(`/api/products/categories`);
+    dispatch({
+      type: PRODUCT_CATEGORY_LIST_SUCCESS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_CATEGORY_LIST_FAIL,
+      payload: error.message,
+    });
+  }
+};
+
+export const listProducts = (filterObj) => async (dispatch) => {
+  dispatch({ type: PRODUCT_LIST_REQUEST });
+  const searchQuery = getSearchQuery(filterObj);
+  try {
+    const res = await axios.get(`/api/products?${searchQuery}`);
     dispatch({
       type: PRODUCT_LIST_SUCCESS,
       payload: res.data,
@@ -61,7 +82,7 @@ export const createProduct = () => async (dispatch, getState) => {
         authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.post('api/products', {}, config);
+    const { data } = await axios.post('/api/products', {}, config);
 
     dispatch({
       type: PRODUCT_CREATE_SUCCESS,
@@ -87,11 +108,7 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await axios.put(
-      `/api/products/${product._id}`,
-      product,
-      config,
-    );
+    const { data } = await axios.put(`/api/products/${product._id}`, product, config);
 
     dispatch({
       type: PRODUCT_UPDATE_SUCCESS,

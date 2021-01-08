@@ -5,6 +5,25 @@ import User from '../models/userModel.js';
 import { generateToken, isAuth, isAdmin } from '../utils.js';
 
 const userRouter = express.Router();
+// @route     GET api/users/top-sellers
+// @desc      Get top sellers
+// @access    Public
+userRouter.get(
+  '/top-sellers',
+  expressAsyncHandler(async (req, res) => {
+    const topSellers = await User.find({ isSeller: true })
+      .sort({
+        'seller.rating': -1,
+      })
+      .limit(3)
+      .select('seller');
+    if (topSellers) {
+      res.send(topSellers);
+    } else {
+      res.status(404).send({ message: 'Top Sellers Not Found' });
+    }
+  }),
+);
 
 // @route     POST api/users/login
 // @desc      Log in user
@@ -21,11 +40,12 @@ userRouter.post(
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
+          isSeller: user.isSeller,
           token: generateToken(user),
         });
       }
     }
-    res.status(401).send({ message: 'Invalic Credentials' });
+    res.status(401).send({ message: 'Invalid Credentials' });
   }),
 );
 
@@ -48,6 +68,7 @@ userRouter.post(
       name: createdUser.name,
       email: createdUser.email,
       isAdmin: createdUser.isAdmin,
+      isSeller: createdUser.isSeller,
       token: generateToken(createdUser),
     });
   }),
@@ -55,10 +76,9 @@ userRouter.post(
 
 // @route     GET api/users/:id
 // @desc      Get user by Id
-// @access    Private
+// @access    Public
 userRouter.get(
   '/:id',
-  isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const user = await User.findById(userId).select([
@@ -66,6 +86,7 @@ userRouter.get(
       'email',
       'isSeller',
       'isAdmin',
+      'seller',
     ]);
     if (user) {
       res.send(user);
@@ -83,25 +104,31 @@ userRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const userId = req.user._id;
+    const { name, email, password, sellerName, sellerLogo, sellerDescription } = req.body;
+
     const user = await User.findById(userId);
-    if (user) {
-      const { name, email, password } = req.body;
-      if (name) user.name = name;
-      if (email) user.email = email;
-      if (password) {
-        user.password = bcrypt.hashSync(password, 8);
-      }
-      const updatedUser = await user.save();
-      res.send({
-        _id: updatedUser._id,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        isAdmin: updatedUser.isAdmin,
-        token: generateToken(updatedUser),
-      });
-    } else {
-      res.status(404).send({ message: 'User Not Found' });
+    if (!user) return res.status(404).send({ message: 'User Not Found' });
+
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) {
+      user.password = bcrypt.hashSync(password, 8);
     }
+    if (user.isSeller) {
+      if (sellerName) user.seller.name = sellerName;
+      if (sellerLogo) user.seller.logo = sellerLogo;
+      if (sellerDescription) user.seller.description = sellerDescription;
+    }
+
+    const updatedUser = await user.save();
+    res.send({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      isSeller: updatedUser.isSeller,
+      token: generateToken(updatedUser),
+    });
   }),
 );
 

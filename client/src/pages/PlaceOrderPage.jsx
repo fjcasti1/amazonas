@@ -16,9 +16,7 @@ const PlaceOrderPage = ({ history }) => {
     history.pushState('/payment');
   }
 
-  const { loading, success, error, order } = useSelector(
-    (state) => state.orderCreate,
-  );
+  const { loading, success, error, order } = useSelector((state) => state.orderCreate);
 
   cart.itemsPrice = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0);
   cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10;
@@ -135,7 +133,7 @@ const PlaceOrderPage = ({ history }) => {
                 </button>
               </li>
               {loading && <Spinner />}
-              {error && <Alert variant='danger'>{error}</Alert>}
+              {error && <Alert>{error}</Alert>}
             </ul>
           </div>
         </div>

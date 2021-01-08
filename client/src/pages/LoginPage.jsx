@@ -1,31 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { login } from '../actions/userActions';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
 
-const LoginPage = ({ history, location }) => {
+const LoginPage = ({ location }) => {
   const dispatch = useDispatch();
 
   const userAuth = useSelector((state) => state.userAuth);
-  const { loading, userInfo, error } = userAuth;
+  const { loading, error } = userAuth;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const redirect = location.search ? location.search.split('=')[1] : '/';
+  const redirect = location.search && location.search.split('redirect=')[1];
 
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(login(email, password));
   };
-
-  useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
-    }
-  }, [history, userInfo, redirect]);
 
   return (
     <div>
@@ -34,7 +28,7 @@ const LoginPage = ({ history, location }) => {
           <h1>Sign In</h1>
         </div>
         {loading && <Spinner />}
-        {error && <Alert variant='danger'>{error}</Alert>}
+        {error && <Alert>{error}</Alert>}
         <div>
           <label htmlFor='email'>Email address</label>
           <input
