@@ -5,7 +5,10 @@ const SearchBox = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    history.push(`/search/name/${name}`);
+
+    const querySearch = name ? `?name=${name}` : '';
+
+    history.push(`/search${querySearch}`);
     setName('');
   };
 

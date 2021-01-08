@@ -23,9 +23,9 @@ import UserEditPage from './pages/UserEditPage';
 import SellerRoute from './components/SellerRoute';
 import GuestRoute from './components/GuestRoute';
 import SellerPage from './pages/SellerPage';
-import SearchPage from './pages/SearchPage';
 import { listCategories } from './actions/productActions';
 import SideBar from './components/SideBar';
+import SearchPage from './pages/SearchPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -43,13 +43,7 @@ const App = () => {
           <Route exact path='/products/:id' component={ProductPage} />
           <Route exact path='/cart/:id?' component={CartPage} />
           <Route exact path='/seller/:id?' component={SellerPage} />
-          <Route exact path='/search/name/:name?' component={SearchPage} />
-          <Route exact path='/search/category/:category' component={SearchPage} />
-          <Route
-            exact
-            path='/search/category/:category/name/:name?'
-            component={SearchPage}
-          />
+          <Route path='/search' component={SearchPage} />
 
           <GuestRoute exact path='/login' component={LoginPage} />
           <GuestRoute exact path='/register' component={RegisterPage} />
