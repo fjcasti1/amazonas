@@ -22,7 +22,6 @@ const SideBar = () => {
             className='close-sidebar'
             type='button'
             onClick={() => {
-              console.log('button clicked');
               dispatch(closeSideBar());
             }}
           >
@@ -37,7 +36,10 @@ const SideBar = () => {
           categories.map((cat) => (
             <li key={cat}>
               <Link
-                to={`/search/category/${cat}`}
+                to={{
+                  pathname: '/search',
+                  search: `category=${cat}`,
+                }}
                 onClick={() => dispatch(closeSideBar())}
               >
                 {cat}
