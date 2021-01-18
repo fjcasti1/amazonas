@@ -56,7 +56,6 @@ productRouter.get(
       .populate('seller', 'seller.name seller.logo')
       .sort(sortOrder);
 
-    console.log(sortOrder);
     res.send(products);
   }),
 );
@@ -172,6 +171,37 @@ productRouter.delete(
       res.send({ message: 'Product deleted' });
     } else {
       res.status(404).send({ message: 'Product Not Found' });
+    }
+  }),
+);
+
+// @route     POST api/products/:id/reviews
+// @desc      Create a product review
+// @access    Private
+productRouter.post(
+  '/:id/reviews',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404).send({ message: 'Product Not Found' });
+    } else {
+      if (product.reviews.find((x) => x.userName === req.user.name)) {
+        return res.status(400).send({ message: 'You already submitted a review' });
+      }
+      const review = { rating, comment, userName: req.user.name };
+      product.reviews.push(review);
+      product.numReviews += 1;
+      product.rating =
+        product.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+        product.reviews.length;
+
+      await product.save();
+      res.status(201).send({ message: 'Review Updated', review: review });
     }
   }),
 );
