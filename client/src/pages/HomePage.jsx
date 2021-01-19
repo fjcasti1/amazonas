@@ -39,7 +39,7 @@ const HomePage = () => {
               <Link to={`/seller/${seller._id}`}>
                 <img src={seller.seller.logo} alt={seller.seller.name} />
               </Link>
-              <p className='legend'>{seller.seller.name}</p>
+              {/* <p className='legend'>{seller.seller.name}</p> */}
             </div>
           ))}
         </Carousel>
