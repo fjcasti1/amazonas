@@ -32,20 +32,19 @@ const SellerPage = ({ match }) => {
         ) : (
           <ul className='card card-body'>
             <li>
-              <div className='row start'>
+              <div className='row'>
                 <img
                   className='small p-1'
                   src={user.seller.logo}
                   alt={user.seller.name}
                 />
-                <h1 className='p-1'>{user.seller.name}</h1>
               </div>
             </li>
             <li>
               <Rating rating={user.seller.rating} numReviews={user.seller.numReviews} />
             </li>
             <li>
-              <a href={`mailto:${user.email}`}>Contact Seller</a>
+              <a href={`mailto:${user.email}`}>Contact {user.seller.name}</a>
             </li>
             <li>{user.seller.description}</li>
           </ul>

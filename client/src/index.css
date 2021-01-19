@@ -233,7 +233,7 @@ img {
   border-radius: 0.5rem;
 }
 img.small {
-  max-width: 5rem;
+  max-width: 18rem;
   width: 100%;
 }
 img.medium {
