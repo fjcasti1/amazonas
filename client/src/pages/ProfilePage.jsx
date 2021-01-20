@@ -4,11 +4,12 @@ import { getUserDetails, updateUserProfile } from '../actions/userActions';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants';
+import axios from 'axios';
 
 const ProfilePage = () => {
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state.userAuth.userInfo._id);
+  const { _id: userId, token } = useSelector((state) => state.userAuth.userInfo);
   const { loading, error, user } = useSelector((state) => state.userDetails);
   const {
     loading: loadingUpdate,
@@ -24,6 +25,11 @@ const ProfilePage = () => {
   const [sellerLogo, setSellerLogo] = useState('');
   const [sellerDescription, setSellerDescription] = useState('');
 
+  const [loadingUpload, setLoadingUpload] = useState(false);
+  const [errorUpload, setErrorUpload] = useState('');
+  const [successUpload, setSuccessUpload] = useState(false);
+  const [file, setFile] = useState(null);
+
   useEffect(() => {
     if (!user) {
       dispatch({ type: USER_UPDATE_PROFILE_RESET });
@@ -37,17 +43,7 @@ const ProfilePage = () => {
         if (user.seller.description) setSellerDescription(user.seller.description);
       }
     }
-  }, [dispatch, userId, user]);
-
-  useEffect(() => {
-    dispatch({ type: USER_UPDATE_PROFILE_RESET });
-  }, [dispatch]);
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-    } else {
+    if (successUpload) {
       dispatch(
         updateUserProfile({
           name,
@@ -59,6 +55,48 @@ const ProfilePage = () => {
         }),
       );
       dispatch(getUserDetails(userId));
+      setSuccessUpload(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, userId, user, successUpdate, successUpload]);
+
+  useEffect(() => {
+    dispatch({ type: USER_UPDATE_PROFILE_RESET });
+  }, [dispatch]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+    } else {
+      if (file) {
+        // Upload image and set successUpload to true
+        // Inside useEffect, will disptach(updateProduct(product))
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', file);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+        setLoadingUpload(true);
+        try {
+          const { data } = await axios.post(
+            '/api/products/uploadimage',
+            bodyFormData,
+            config,
+          );
+          setSellerLogo(data); // image path
+          setSuccessUpload(true);
+        } catch (error) {
+          setErrorUpload(error.message);
+          setSuccessUpload(false);
+        }
+        setLoadingUpload(false);
+      } else {
+        setSuccessUpload(true);
+      }
     }
   };
 
@@ -126,14 +164,15 @@ const ProfilePage = () => {
               />
             </div>
             <div>
-              <label htmlFor='sellerLogo'>Seller Logo</label>
+              <label htmlFor='sellerLogoFile'>Upload Seller Logo</label>
               <input
-                type='text'
-                id='sellerLogo'
-                placeholder='Enter Seller Logo'
-                value={sellerLogo}
-                onChange={(e) => setSellerLogo(e.target.value)}
+                type='file'
+                id='sellerLogoFile'
+                placeholder='Choose logo'
+                onChange={(e) => setFile(e.target.files[0])}
               />
+              {loadingUpload && <Spinner />}
+              {errorUpload && <Alert>{errorUpload}</Alert>}
             </div>
             <div>
               <label htmlFor='sellerDescription'>Seller Description</label>
