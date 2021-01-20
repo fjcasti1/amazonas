@@ -4,10 +4,10 @@ import mongoose from 'mongoose';
 const data = {
   users: [
     {
-      name: 'Kiko',
+      name: 'Francisco',
       email: 'kiko@gmail.com',
       password: bcrypt.hashSync('12', 8),
-      isSeller: true,
+      isSeller: false,
       isAdmin: true,
     },
     {
@@ -16,6 +16,14 @@ const data = {
       password: bcrypt.hashSync('1234', 8),
       isSeller: true,
       isAdmin: false,
+      seller: {
+        name: 'Nike',
+        logo: '/img/nikeLogo.jpg',
+        description:
+          'Nike, Inc. is an American multinational corporation that is engaged in the design, development, manufacturing, and worldwide marketing and sales of footwear, apparel, equipment, accessories, and services. The company is headquartered near Beaverton, Oregon, in the Portland metropolitan area.',
+        rating: 0,
+        numReviews: 0,
+      },
     },
     {
       name: 'Jane',
@@ -23,17 +31,33 @@ const data = {
       password: bcrypt.hashSync('1234', 8),
       isSeller: true,
       isAdmin: false,
-    },
-    {
-      name: 'Kevin',
-      email: 'kevin@example.com',
-      password: bcrypt.hashSync('1234', 8),
-      isSeller: false,
-      isAdmin: false,
+      seller: {
+        name: 'Adidas',
+        logo: '/img/adidasLogo.jpg',
+        description:
+          'Adidas is a German multinational corporation, founded and headquartered in Herzogenaurach, Germany, that designs and manufactures shoes, clothing and accessories. It is the largest sportswear manufacturer in Europe, and the second largest in the world.',
+        rating: 0,
+        numReviews: 0,
+      },
     },
     {
       name: 'Mark',
       email: 'mark@example.com',
+      password: bcrypt.hashSync('1234', 8),
+      isSeller: true,
+      isAdmin: false,
+      seller: {
+        name: 'Reebok',
+        logo: '/img/reebokLogo.jpg',
+        description:
+          'Reebok International Limited is an Anglo-American footwear and clothing company. Reebok produces and distributes fitness, running and CrossFit sportswear.',
+        rating: 0,
+        numReviews: 0,
+      },
+    },
+    {
+      name: 'Kevin',
+      email: 'kevin@example.com',
       password: bcrypt.hashSync('1234', 8),
       isSeller: false,
       isAdmin: false,
