@@ -10,7 +10,7 @@ const ProductEditPage = ({ match, history }) => {
   const dispatch = useDispatch();
   const productId = match.params.id;
 
-  const token = useSelector((state) => state.userAuth.userInfo.token);
+  const { token, isSeller } = useSelector((state) => state.userAuth.userInfo);
 
   const { loading, error, product } = useSelector((state) => state.productDetails);
   const {
@@ -35,7 +35,11 @@ const ProductEditPage = ({ match, history }) => {
   useEffect(() => {
     if (successUpdate) {
       dispatch({ type: PRODUCT_UPDATE_RESET });
-      history.push('/productlist');
+      if (isSeller) {
+        history.push('/productlist/seller');
+      } else {
+        history.push('/productlist');
+      }
     }
 
     if (!product || product._id !== productId || successUpdate) {
@@ -43,7 +47,7 @@ const ProductEditPage = ({ match, history }) => {
     } else {
       setName(product.name);
       setPrice(product.price);
-      // setImage(product.image);
+      setImage(product.image);
       setCategory(product.category);
       setCountInStock(product.countInStock);
       setBrand(product.brand);
@@ -70,30 +74,34 @@ const ProductEditPage = ({ match, history }) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // Upload image and set successUpload to true
-    // Inside useEffect, will disptach(updateProduct(product))
-    const bodyFormData = new FormData();
-    bodyFormData.append('image', file);
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    };
-    setLoadingUpload(true);
-    try {
-      const { data } = await axios.post(
-        '/api/products/uploadimage',
-        bodyFormData,
-        config,
-      );
-      setImage(data); // image path
+    if (file) {
+      // Upload image and set successUpload to true
+      // Inside useEffect, will disptach(updateProduct(product))
+      const bodyFormData = new FormData();
+      bodyFormData.append('image', file);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      setLoadingUpload(true);
+      try {
+        const { data } = await axios.post(
+          '/api/products/uploadimage',
+          bodyFormData,
+          config,
+        );
+        setImage(data); // image path
+        setSuccessUpload(true);
+      } catch (error) {
+        setErrorUpload(error.message);
+        setSuccessUpload(false);
+      }
+      setLoadingUpload(false);
+    } else {
       setSuccessUpload(true);
-    } catch (error) {
-      setErrorUpload(error.message);
-      setSuccessUpload(false);
     }
-    setLoadingUpload(false);
   };
 
   return (
