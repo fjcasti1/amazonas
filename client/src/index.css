@@ -241,7 +241,8 @@ img.medium {
   width: 100%;
 }
 img.large {
-  width: 100%;
+  width: 95%;
+  padding: 1rem;
 }
 
 /* Card */
