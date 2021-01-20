@@ -6,7 +6,10 @@ import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
 import { createReview, detailsProduct } from '../actions/productActions';
 import { addToCart } from '../actions/cartActions';
-import { PRODUCT_REVIEW_CREATE_RESET } from '../constants/productConstants';
+import {
+  PRODUCT_DETAILS_RESET,
+  PRODUCT_REVIEW_CREATE_RESET,
+} from '../constants/productConstants';
 
 const ProductPage = ({ history, match }) => {
   const dispatch = useDispatch();
@@ -35,12 +38,14 @@ const ProductPage = ({ history, match }) => {
 
   useEffect(() => {
     if (successReview) {
-      window.alert('Review Submitted Successfully');
       setRating('');
       setComment('');
       dispatch({ type: PRODUCT_REVIEW_CREATE_RESET });
     }
     dispatch(detailsProduct(productId));
+    return () => {
+      dispatch({ type: PRODUCT_DETAILS_RESET });
+    };
   }, [dispatch, productId, successReview]);
 
   const submitHandler = (e) => {
@@ -160,7 +165,7 @@ const ProductPage = ({ history, match }) => {
                 product.reviews.map((review) => (
                   <li key={review._id}>
                     <strong>{review.name}</strong>
-                    <Rating rating={review.rating} caption='' />
+                    <Rating rating={review.rating} caption={` from ${review.userName}`} />
                     <p>{review.createdAt.substring(0, 10)}</p>
                     <p>{review.comment}</p>
                   </li>
