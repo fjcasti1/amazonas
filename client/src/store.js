@@ -21,6 +21,7 @@ import {
   productUpdateReducer,
 } from './reducers/productReducers';
 import {
+  userAddressMapReducer,
   userAuthReducer,
   userDeleteReducer,
   userDetailsReducer,
@@ -56,6 +57,7 @@ const reducer = combineReducers({
   userUpdateProfile: userUpdateProfileReducer,
   userUpdate: userUpdateReducer,
   userTopSellersList: userTopSellersListReducer,
+  userAddressMap: userAddressMapReducer,
 
   layout: layoutReducer,
 });

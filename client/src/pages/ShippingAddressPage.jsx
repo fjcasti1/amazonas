@@ -9,17 +9,49 @@ const ShippingAddressPage = ({ history }) => {
   if (!userInfo) history.push('/login');
 
   const shippingAddress = useSelector((state) => state.cart.shippingAddress);
+  const addressMap = useSelector((state) => state.userAddressMap.address);
 
   const [fullName, setFullName] = useState(shippingAddress.fullName);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
   const [country, setCountry] = useState(shippingAddress.country);
+  const [lat, setLat] = useState(shippingAddress.lat);
+  const [lng, setLng] = useState(shippingAddress.lng);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveShippingAddress({ fullName, address, city, postalCode, country }));
-    history.push('/payment');
+    if (addressMap) {
+      setLat(addressMap.lat);
+      setLng(addressMap.lng);
+    }
+    const newLat = addressMap ? addressMap.lat : lat;
+    const newLng = addressMap ? addressMap.lng : lng;
+
+    let moveOn = true;
+    if (!newLat || !newLng) {
+      moveOn = window.confirm('You did not set your location on map. Continue?');
+    }
+
+    if (moveOn) {
+      dispatch(
+        saveShippingAddress({
+          fullName,
+          address,
+          city,
+          postalCode,
+          country,
+          lat: newLat,
+          lng: newLng,
+        }),
+      );
+      history.push('/payment');
+    }
+  };
+
+  const chooseOnMap = () => {
+    dispatch(saveShippingAddress(fullName, address, city, postalCode, country, lat, lng));
+    history.push('/map');
   };
 
   return (
@@ -83,6 +115,12 @@ const ShippingAddressPage = ({ history }) => {
             onChange={(e) => setCountry(e.target.value)}
             required
           />
+        </div>
+        <div>
+          <label htmlFor='chooseOnMap'>Location</label>
+          <button type='button' onClick={chooseOnMap}>
+            Choose On Map
+          </button>
         </div>
         <div>
           <label />

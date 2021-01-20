@@ -27,6 +27,7 @@ import { listCategories } from './actions/productActions';
 import SideBar from './components/SideBar';
 import SearchPage from './pages/SearchPage';
 import SellerOrAdminRoute from './components/SellerOrAdminRoute';
+import MapPage from './pages/MapPage';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,6 +51,7 @@ const App = () => {
           <GuestRoute exact path='/register' component={RegisterPage} />
 
           <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
+          <PrivateRoute exact path='/map' component={MapPage} />
           <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
           <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
