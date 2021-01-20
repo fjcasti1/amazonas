@@ -1,11 +1,12 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
-import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import { isAuth, isSellerOrAdmin } from '../utils.js';
 import multer from 'multer';
 import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
 import dotenv from 'dotenv';
+import User from '../models/userModel.js';
 
 // Access to env variables
 dotenv.config();
@@ -21,7 +22,7 @@ const storage = multerS3({
   acl: 'public-read',
   contentType: multerS3.AUTO_CONTENT_TYPE,
   key(req, file, cb) {
-    cb(null, file.originalname);
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
 const upload = multer({ storage });
@@ -142,13 +143,13 @@ productRouter.put(
     if (!product) {
       res.status(404).send({ message: 'Product Not Found' });
     } else {
-      product.name = name;
-      product.price = price;
-      product.image = image;
-      product.category = category;
-      product.brand = brand;
-      product.countInStock = countInStock;
-      product.description = description;
+      if (name) product.name = name;
+      if (price) product.price = price;
+      if (image) product.image = image;
+      if (category) product.category = category;
+      if (brand) product.brand = brand;
+      if (countInStock) product.countInStock = countInStock;
+      if (description) product.description = description;
     }
     const updatedProduct = await product.save();
     res.send({ message: 'Product Updated', product: updatedProduct });
@@ -161,16 +162,12 @@ productRouter.put(
 productRouter.post(
   '/uploadimage',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   upload.single('image'),
   (req, res) => {
-    res.send(`/${req.file.path}`);
+    res.send(`${req.file.location}`);
   },
 );
-
-productRouter.post('/uploadimage', upload.single('image'), (req, res) => {
-  res.send(req.file.location);
-});
 
 // @route     DELETE api/products/:id
 // @desc      Delete product by Id
@@ -178,7 +175,7 @@ productRouter.post('/uploadimage', upload.single('image'), (req, res) => {
 productRouter.delete(
   '/:id',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
@@ -216,6 +213,15 @@ productRouter.post(
         product.reviews.length;
 
       await product.save();
+
+      const seller = await User.findById(product.seller);
+      const { rating: sellerRating, numReviews: sellerNumReviews } = seller.seller;
+      seller.seller.rating =
+        (sellerRating * sellerNumReviews + Number(rating)) / (sellerNumReviews + 1);
+      seller.seller.numReviews += 1;
+
+      await seller.save();
+
       res.status(201).send({ message: 'Review Updated', review: review });
     }
   }),
