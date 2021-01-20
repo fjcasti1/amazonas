@@ -1,18 +1,30 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
-import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import { isAuth, isSellerOrAdmin } from '../utils.js';
 import multer from 'multer';
+import multerS3 from 'multer-s3';
+import aws from 'aws-sdk';
+import dotenv from 'dotenv';
+import User from '../models/userModel.js';
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${Date.now()}.jpg`);
+// Access to env variables
+dotenv.config();
+
+aws.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+const s3 = new aws.S3();
+const storage = multerS3({
+  s3,
+  bucket: process.env.AWS_BUCKET_NAME,
+  acl: 'public-read',
+  contentType: multerS3.AUTO_CONTENT_TYPE,
+  key(req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
   },
 });
-
 const upload = multer({ storage });
 
 const productRouter = express.Router();
@@ -56,7 +68,6 @@ productRouter.get(
       .populate('seller', 'seller.name seller.logo')
       .sort(sortOrder);
 
-    console.log(sortOrder);
     res.send(products);
   }),
 );
@@ -132,13 +143,13 @@ productRouter.put(
     if (!product) {
       res.status(404).send({ message: 'Product Not Found' });
     } else {
-      product.name = name;
-      product.price = price;
-      product.image = image;
-      product.category = category;
-      product.brand = brand;
-      product.countInStock = countInStock;
-      product.description = description;
+      if (name) product.name = name;
+      if (price) product.price = price;
+      if (image) product.image = image;
+      if (category) product.category = category;
+      if (brand) product.brand = brand;
+      if (countInStock) product.countInStock = countInStock;
+      if (description) product.description = description;
     }
     const updatedProduct = await product.save();
     res.send({ message: 'Product Updated', product: updatedProduct });
@@ -151,10 +162,10 @@ productRouter.put(
 productRouter.post(
   '/uploadimage',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   upload.single('image'),
   (req, res) => {
-    res.send(`/${req.file.path}`);
+    res.send(`${req.file.location}`);
   },
 );
 
@@ -164,7 +175,7 @@ productRouter.post(
 productRouter.delete(
   '/:id',
   isAuth,
-  isAdmin,
+  isSellerOrAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
@@ -172,6 +183,46 @@ productRouter.delete(
       res.send({ message: 'Product deleted' });
     } else {
       res.status(404).send({ message: 'Product Not Found' });
+    }
+  }),
+);
+
+// @route     POST api/products/:id/reviews
+// @desc      Create a product review
+// @access    Private
+productRouter.post(
+  '/:id/reviews',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const { rating, comment } = req.body;
+
+    const product = await Product.findById(productId);
+
+    if (!product) {
+      res.status(404).send({ message: 'Product Not Found' });
+    } else {
+      if (product.reviews.find((x) => x.userName === req.user.name)) {
+        return res.status(400).send({ message: 'You already submitted a review' });
+      }
+      const review = { rating, comment, userName: req.user.name };
+      product.reviews.push(review);
+      product.numReviews += 1;
+      product.rating =
+        product.reviews.reduce((acc, curr) => acc + curr.rating, 0) /
+        product.reviews.length;
+
+      await product.save();
+
+      const seller = await User.findById(product.seller);
+      const { rating: sellerRating, numReviews: sellerNumReviews } = seller.seller;
+      seller.seller.rating =
+        (sellerRating * sellerNumReviews + Number(rating)) / (sellerNumReviews + 1);
+      seller.seller.numReviews += 1;
+
+      await seller.save();
+
+      res.status(201).send({ message: 'Review Updated', review: review });
     }
   }),
 );

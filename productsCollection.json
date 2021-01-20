@@ -1,0 +1,401 @@
+[{
+  "_id": {
+    "$oid": "600763266f4e59495cd56ee1"
+  },
+  "name": "Nike Women's Short-Sleeve T-Shirt",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611097900557-10.jpg",
+  "price": 9.95,
+  "category": "Women, Shirts",
+  "brand": "Nike",
+  "countInStock": 10,
+  "rating": 3,
+  "numReviews": 1,
+  "description": "Material wicks sweat & dries really fast. 4-way stretch construction moves better in every direction . Anti-odor technology prevents the growth of odor-causing microbes. Black front chest logo.",
+  "reviews": [
+    {
+      "_id": {
+        "$oid": "600779e26263c303bf9c236a"
+      },
+      "rating": 3,
+      "comment": "The color fades quickly",
+      "userName": "Jane",
+      "createdAt": {
+        "$date": "2021-01-20T00:31:30.901Z"
+      },
+      "updatedAt": {
+        "$date": "2021-01-20T00:31:30.901Z"
+      }
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "600767b9bf783a58737916d7"
+  },
+  "name": "Nike Women's Sportswear T-Shirt",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611098177094-16.jpg",
+  "price": 16.9,
+  "category": "Women, Shirts",
+  "brand": "Nike",
+  "countInStock": 5,
+  "rating": 5,
+  "numReviews": 1,
+  "description": "The must-have, everyday tee is back and better than ever before..",
+  "reviews": [
+    {
+      "_id": {
+        "$oid": "600779af6263c303bf9c2369"
+      },
+      "rating": 5,
+      "comment": "Great shirt",
+      "userName": "Jane",
+      "createdAt": {
+        "$date": "2021-01-20T00:30:39.736Z"
+      },
+      "updatedAt": {
+        "$date": "2021-01-20T00:30:39.736Z"
+      }
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "60076843bf783a58737916d8"
+  },
+  "name": "Nike Women's Workout T-Shirt",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611098326401-19.jpg",
+  "price": 24.95,
+  "category": "Women, Shirts",
+  "brand": "Nike",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Nike Women's Long Sleeve T-Shirt Dri-FIT fabric wicks moisture away. Ideal for a variety of training conditions. Swoosh at upper left chest. 100% polyester.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "600768dabf783a58737916d9"
+  },
+  "name": "Nike Women's Training Pants",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611098521338-37.jpg",
+  "price": 34.95,
+  "category": "Women, Pants",
+  "brand": "Nike",
+  "countInStock": 15,
+  "rating": 5,
+  "numReviews": 1,
+  "description": "Ideal for high-intensity training and competition, Women's Nike Victory Training Pants deliver the sweat-wicking power of Dri-FIT technology in a body-hugging silhouette.",
+  "reviews": [
+    {
+      "_id": {
+        "$oid": "60077a086263c303bf9c236b"
+      },
+      "rating": 5,
+      "comment": "Amazing pants to workout!",
+      "userName": "Jane",
+      "createdAt": {
+        "$date": "2021-01-20T00:32:08.594Z"
+      },
+      "updatedAt": {
+        "$date": "2021-01-20T00:32:08.594Z"
+      }
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "600769c3bf783a58737916da"
+  },
+  "name": "Nike Women's Leggings",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611098624135-44.jpg",
+  "price": 42,
+  "category": "Women, Pants",
+  "brand": "Nike",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Slip into high-waisted coverage with the Nike Sportswear Club Leggings. Featuring a bold Swoosh design and a waistband with a repeating pattern, they're crafted for all-day comfort.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60076a72bf783a58737916db"
+  },
+  "name": "Nike Men's Training Pants",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611098870197-50.jpeg",
+  "price": 44.48,
+  "category": "Men, Pants",
+  "brand": "Nike",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Nike Men's Training Pant, featuring an elastic waistband with drawcord for a snug fit and side pockets for secure storage.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60076b79bf783a58737916dc"
+  },
+  "name": "Nike Men's Jogger",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611099124377-96.jpeg",
+  "price": 96,
+  "category": "Men, Pants",
+  "brand": "Nike",
+  "countInStock": 20,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "A closet staple, the Nike Sportswear Joggers combine a classic look with the soft comfort of fleece for an elevated, everyday look that you can wear every day.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60076bfdbf783a58737916dd"
+  },
+  "name": "Nike Essential Short Sleeve",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611099250899-20.jpg",
+  "price": 23.98,
+  "category": "Men, Shirts",
+  "brand": "Nike",
+  "countInStock": 0,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "The Nike Essential Short Sleeve provides protection on areas covered. Dri-FIT technology keeps you dry and comfortable. Internal neck tape is comfortable against the skin.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60076cd9bf783a58737916de"
+  },
+  "name": "Nike Men's Short Sleeve Swim Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c3"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611099429902-24.jpg",
+  "price": 27.95,
+  "category": "Men, Shirts",
+  "brand": "Nike",
+  "countInStock": 10,
+  "rating": 5,
+  "numReviews": 1,
+  "description": "Nike men's short sleeve hydro guard is designed with comfort and protection in mind. It's finished with flat seams to prevent chafing, and soft dri-fit fabric to Wisk moisture away.",
+  "reviews": [
+    {
+      "_id": {
+        "$oid": "60077a566263c303bf9c236c"
+      },
+      "rating": 5,
+      "comment": "Very comfortable for running long distance",
+      "userName": "Francisco",
+      "createdAt": {
+        "$date": "2021-01-20T00:33:26.223Z"
+      },
+      "updatedAt": {
+        "$date": "2021-01-20T00:33:26.223Z"
+      }
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "60076eaebf783a58737916df"
+  },
+  "name": "Adidas Women's Plus Size Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c4"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611103495815-18.jpg",
+  "price": 18.95,
+  "category": "Women, Shirts",
+  "brand": "Adidas",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "This women's adidas t-shirt is versatile in its simplicity and features a classic-look crewneck to keep its shape.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077bb06263c303bf9c236d"
+  },
+  "name": "Adidas Women's Sport Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c4"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611103255051-30.jpg",
+  "price": 30.5,
+  "category": "Women, Shirts",
+  "brand": "Adidas",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Celebrate your love of sport with this adidas t-shirt. Without saying a word, it says everything and keeps you comfortable, too.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077c1c6263c303bf9c236e"
+  },
+  "name": "Adidas Men's Trefoil T-Shirt",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c4"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611103360158-24.jpg",
+  "price": 24.99,
+  "category": "Men, Shirts",
+  "brand": "Adidas",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Ready-to-wear, sport the trendy trefoil graphic t-shirt from adidas Originals. A simple design, this short sleeve tee features a large, rubber-print logo on the front so you can show off your love of the brand.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077caa6263c303bf9c236f"
+  },
+  "name": "Adidas Men's Freelift Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c4"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611103456995-60.jpg",
+  "price": 59.85,
+  "category": "Men, Shirts",
+  "brand": "Adidas",
+  "countInStock": 15,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Designed with overhead movements in mind, this adidas workout t-shirt offers a full range of motion. It's made of moisture-absorbing fabric with a soft, cotton-like feel.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077dfd6263c303bf9c2370"
+  },
+  "name": "Adidas Men's Training Pants",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c4"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611103791848-65.jpg",
+  "price": 64.95,
+  "category": "Men, Pants",
+  "brand": "Adidas",
+  "countInStock": 20,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Slip on sporty style between training sessions. A tapered-leg fit gives these pants a comfortable, modern look. They're made of a slightly shiny French terry with a towel-like feel.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077ec86263c303bf9c2371"
+  },
+  "name": "Reebok Men's Classic Track Pants",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104010689-40.jpg",
+  "price": 40.8,
+  "category": "Men, Pants",
+  "brand": "Reebok",
+  "countInStock": 15,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "International flags inspire the design of these men's track pants. Adjust the ankles with drawcords to change your look. Woven fabric feels smooth.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077f946263c303bf9c2372"
+  },
+  "name": "Reebok Women's Training Pant",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104212766-60.jpg",
+  "price": 46.69,
+  "category": "Women, Pants",
+  "brand": "Reebok",
+  "countInStock": 15,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "The simple, classic look of these women's pants keep you reaching for them again and again. They're made of soft French terry for a comfortable feel that lasts all day long.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "60077feb6263c303bf9c2373"
+  },
+  "name": "Reebok Women's Training T-Shirt",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104355944-29.jpg",
+  "price": 52.34,
+  "category": "Women, Shirts",
+  "brand": "Reebok",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "Speedwick moisture management and comfortable fabric take this basic gym wear T-shirt to a whole new level. The essential tee is ready to take on the toughest WOD with a layer of comfort.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "600780a46263c303bf9c2374"
+  },
+  "name": "Reebok Women's Classic Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104515351-24.jpg",
+  "price": 25,
+  "category": "Women, Shirts",
+  "brand": "Reebok",
+  "countInStock": 0,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "All-cotton jersey feels soft and comfy.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "6007813a6263c303bf9c2375"
+  },
+  "name": "Reebok Unisex Classic Vector Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104616216-30.jpg",
+  "price": 33.61,
+  "category": "Men, Shirts",
+  "brand": "Reebok",
+  "countInStock": 10,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "A contrast Reebok Vector logo gives this tee a confident, sporty look. All-cotton jersey feels soft and comfy.",
+  "reviews": []
+},{
+  "_id": {
+    "$oid": "6007816b6263c303bf9c2376"
+  },
+  "name": "Reebok Men's Training Tee",
+  "seller": {
+    "$oid": "60075d4d7c3a033837a676c5"
+  },
+  "image": "https://amazonas-bucket.s3.amazonaws.com/1611104683798-28.jpg",
+  "price": 28.4,
+  "category": "Men, Shirts",
+  "brand": "Reebok",
+  "countInStock": 20,
+  "rating": 0,
+  "numReviews": 0,
+  "description": "This men's t-shirt helps you settle in on reset days with a casual, soft cotton build.",
+  "reviews": []
+}]

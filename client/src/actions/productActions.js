@@ -18,6 +18,9 @@ import {
   PRODUCT_CATEGORY_LIST_REQUEST,
   PRODUCT_CATEGORY_LIST_SUCCESS,
   PRODUCT_CATEGORY_LIST_FAIL,
+  PRODUCT_REVIEW_CREATE_REQUEST,
+  PRODUCT_REVIEW_CREATE_SUCCESS,
+  PRODUCT_REVIEW_CREATE_FAIL,
 } from '../constants/productConstants';
 import { getSearchQuery } from '../utils/functions';
 
@@ -142,6 +145,36 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
     console.error(error);
     dispatch({
       type: PRODUCT_DELETE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const createReview = (productId, review) => async (dispatch, getState) => {
+  dispatch({ type: PRODUCT_REVIEW_CREATE_REQUEST });
+  try {
+    const token = getState().userAuth.userInfo.token;
+    const config = {
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.post(
+      `/api/products/${productId}/reviews`,
+      review,
+      config,
+    );
+
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_SUCCESS,
+      payload: data.review,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_CREATE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

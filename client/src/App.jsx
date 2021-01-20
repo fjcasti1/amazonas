@@ -26,6 +26,7 @@ import SellerPage from './pages/SellerPage';
 import { listCategories } from './actions/productActions';
 import SideBar from './components/SideBar';
 import SearchPage from './pages/SearchPage';
+import SellerOrAdminRoute from './components/SellerOrAdminRoute';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -58,8 +59,13 @@ const App = () => {
           <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
           <SellerRoute exact path='/orderlist/seller' component={OrderListPage} />
 
+          <SellerOrAdminRoute
+            exact
+            path='/products/:id/edit'
+            component={ProductEditPage}
+          />
+
           <AdminRoute exact path='/productlist' component={ProductListPage} />
-          <AdminRoute exact path='/products/:id/edit' component={ProductEditPage} />
           <AdminRoute exact path='/orderlist' component={OrderListPage} />
           <AdminRoute exact path='/userlist' component={UserListPage} />
           <AdminRoute exact path='/users/:id/edit' component={UserEditPage} />

@@ -122,6 +122,9 @@ button.small {
 }
 
 /* Header */
+header {
+  padding: 0rem 3rem 0rem 3rem;
+}
 header a:not(.search) {
   color: var(--white);
   padding: 1rem;
@@ -230,15 +233,16 @@ img {
   border-radius: 0.5rem;
 }
 img.small {
-  max-width: 5rem;
-  width: 100%;
+  max-width: 30rem;
+  width: 90%;
 }
 img.medium {
   max-width: 29rem;
   width: 100%;
 }
 img.large {
-  width: 100%;
+  width: 95%;
+  padding: 1rem;
 }
 
 /* Card */
@@ -393,4 +397,30 @@ img.large {
 
 li.filter-option {
   margin: 0 0 0.5rem 0;
+}
+
+/* Map */
+.full-container {
+  margin: -1rem;
+  height: calc(100% + 2rem);
+}
+
+.map-input-box {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0.5rem auto;
+  width: 25rem;
+  height: 4rem;
+  display: flex;
+}
+
+.map-input-box input {
+  border-radius: 1rem 0 0 1rem;
+  border-right: 0;
+}
+.map-input-box button {
+  border-radius: 0 1rem 1rem 0;
+  border-left: 0;
 }

@@ -1,6 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Product from '../components/Product';
 import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
@@ -10,7 +9,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { listProducts } from '../actions/productActions';
 import { listTopSellers } from '../actions/userActions';
 
-const HomePage = () => {
+const HomePage = ({ history }) => {
   const dispatch = useDispatch();
 
   const { loading, error, products } = useSelector((state) => state.productList);
@@ -35,12 +34,7 @@ const HomePage = () => {
       ) : (
         <Carousel showArrows autoPlay infiniteLoop showThumbs={false}>
           {sellers.map((seller) => (
-            <div key={seller._id}>
-              <Link to={`/seller/${seller._id}`}>
-                <img src={seller.seller.logo} alt={seller.seller.name} />
-              </Link>
-              <p className='legend'>{seller.seller.name}</p>
-            </div>
+            <img key={seller._id} src={seller.seller.logo} alt={seller.seller.name} />
           ))}
         </Carousel>
       )}
