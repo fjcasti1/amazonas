@@ -2,8 +2,11 @@ import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import { isAdmin, isAuth, isSellerOrAdmin } from '../utils.js';
+import Stripe from 'stripe';
 
 const orderRouter = express.Router();
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // @route     POST api/orders
 // @desc      Create an order
@@ -173,6 +176,25 @@ orderRouter.put(
     } else {
       res.status(404).send({ message: 'Order Not Found' });
     }
+  }),
+);
+
+// @route     POST api/orders/create-payment-intent
+// @desc      Create payment intent for stripe
+// @access    Private
+orderRouter.post(
+  '/create-payment-intent',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const { amount } = req.body;
+    // Create a PaymentIntent with the order amount and currency
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'usd',
+    });
+    res.send({
+      clientSecret: paymentIntent.client_secret,
+    });
   }),
 );
 
