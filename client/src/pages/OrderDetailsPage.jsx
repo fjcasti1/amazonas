@@ -7,11 +7,41 @@ import Spinner from '../components/Spinner';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
+import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import CardSection from '../components/CardSection';
+
+const cardStyle = {
+  hidePostalCode: true,
+  style: {
+    base: {
+      color: '#32325d',
+      fontFamily: 'Roboto, sans-serif',
+      fontSmoothing: 'antialiased',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#32325d',
+      },
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a',
+    },
+  },
+};
 
 const OrderDetailsPage = ({ match }) => {
   const dispatch = useDispatch();
 
   const [sdkReady, setSdkReady] = useState(false);
+  // Stripe setup
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const [succeeded, setSucceeded] = useState(false);
+  const [stripeError, setStripeError] = useState(null);
+  const [processing, setProcessing] = useState('');
+  const [disabled, setDisabled] = useState(true);
+  const [clientSecret, setClientSecret] = useState('');
 
   const { loading, error, order } = useSelector((state) => state.orderDetails);
   const { loading: loadingPay, error: errorPay, success: successPay } = useSelector(
@@ -26,18 +56,39 @@ const OrderDetailsPage = ({ match }) => {
 
   const orderId = match.params.id;
 
-  useEffect(() => {
-    const addPayPalScript = async () => {
-      const res = await axios.get('/api/config/paypal');
-      const clientId = res.data;
-      const script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      script.async = true;
-      script.onload = () => setSdkReady(true);
-      document.body.appendChild(script);
+  const addPayPalScript = async () => {
+    const res = await axios.get('/api/config/paypal');
+    const clientId = res.data;
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&disable-funding=card`;
+    script.async = true;
+    script.onload = () => setSdkReady(true);
+    document.body.appendChild(script);
+  };
+  const fetchPaymentIntent = async () => {
+    const config = {
+      headers: {
+        authorization: `Bearer ${userInfo.token}`,
+      },
     };
+    try {
+      const {
+        data: { clientSecret: stripeClientSecret },
+      } = await axios.post(
+        `/api/orders/create-payment-intent`,
+        {
+          amount: order.totalPrice * 100, // Stripe calculates amounts in the lowest denomination
+        },
+        config,
+      );
+      setClientSecret(stripeClientSecret);
+    } catch (error) {
+      setStripeError(error);
+    }
+  };
 
+  useEffect(() => {
     if (!order || order._id !== orderId || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
@@ -49,12 +100,40 @@ const OrderDetailsPage = ({ match }) => {
         } else {
           setSdkReady(true);
         }
+        fetchPaymentIntent();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, orderId, order, successPay, successDeliver]);
 
   const successPaymentHandler = (paymentResult) => {
     dispatch(payOrder(order, paymentResult));
+  };
+
+  const handleChange = async (event) => {
+    // Listen for changes in the CardElement
+    // and display any errors as the customer types their card details
+    setDisabled(event.empty);
+    setStripeError(event.error ? event.error.message : '');
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    setProcessing(true);
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      receipt_email: userInfo.email,
+      payment_method: {
+        card: elements.getElement(CardElement),
+      },
+    });
+    if (payload.error) {
+      setStripeError(`Payment failed ${payload.error.message}`);
+      setProcessing(false);
+    } else {
+      setStripeError(null);
+      setProcessing(false);
+      setSucceeded(true);
+    }
   };
 
   return loading ? (
@@ -132,19 +211,19 @@ const OrderDetailsPage = ({ match }) => {
               <li>
                 <div className='row'>
                   <div>Items</div>
-                  <div>${order.itemsPrice.toFixed(2)}</div>
+                  <div>${order.itemsPrice}</div>
                 </div>
               </li>
               <li>
                 <div className='row'>
                   <div>Shipping</div>
-                  <div>${order.shippingPrice.toFixed(2)}</div>
+                  <div>${order.shippingPrice}</div>
                 </div>
               </li>
               <li>
                 <div className='row'>
                   <div>Tax</div>
-                  <div>${order.taxPrice.toFixed(2)}</div>
+                  <div>${order.taxPrice}</div>
                 </div>
               </li>
               <li>
@@ -153,7 +232,7 @@ const OrderDetailsPage = ({ match }) => {
                     <strong>Order Total</strong>
                   </div>
                   <div>
-                    <strong>${order.totalPrice.toFixed(2)}</strong>
+                    <strong>${order.totalPrice}</strong>
                   </div>
                 </div>
               </li>
@@ -163,6 +242,42 @@ const OrderDetailsPage = ({ match }) => {
                     <Spinner />
                   ) : (
                     <Fragment>
+                      <form id='payment-form' onSubmit={handleSubmit}>
+                        <CardElement
+                          id='card-element'
+                          options={cardStyle}
+                          onChange={handleChange}
+                        />
+                        <button
+                          disabled={processing || disabled || succeeded}
+                          id='creditButton'
+                        >
+                          <span id='button-text'>
+                            {processing ? (
+                              <div className='spinner-payment' id='spinner'>
+                                caca
+                              </div>
+                            ) : (
+                              'Pay'
+                            )}
+                          </span>
+                        </button>
+                        {/* Show any error that happens when processing the payment */}
+                        {stripeError && (
+                          <div className='card-error' role='alert'>
+                            {stripeError}
+                          </div>
+                        )}
+                        {/* Show a success message upon completion */}
+                        <p
+                          className={
+                            succeeded ? 'result-message' : 'result-message hidden'
+                          }
+                        >
+                          Payment succeeded, see the result in your Refresh the page to
+                          pay again.
+                        </p>
+                      </form>
                       {errorPay && <Alert>{errorPay}</Alert>}
                       <PayPalButton
                         amount={order.totalPrice}

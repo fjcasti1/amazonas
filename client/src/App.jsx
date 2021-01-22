@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import CartPage from './pages/CartPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
@@ -28,6 +30,13 @@ import SideBar from './components/SideBar';
 import SearchPage from './pages/SearchPage';
 import SellerOrAdminRoute from './components/SellerOrAdminRoute';
 
+// Make sure to call loadStripe outside of a component’s render to avoid
+// recreating the Stripe object on every render.
+// loadStripe is initialized with your real test publishable API key.
+const stripePromise = loadStripe(
+  'pk_test_51IC6dhBn3WNbd6XSJAQGZaxqK7F8YoK5Dd8mdBE86rdSEEaNaUyonDQqfnFbZ1DLK0hmtC32dNrXsCkB8wEMNqaP00Gsw8MnMh',
+);
+
 const App = () => {
   const dispatch = useDispatch();
 
@@ -53,7 +62,9 @@ const App = () => {
           <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
           <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
-          <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
+          <Elements stripe={stripePromise}>
+            <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
+          </Elements>
           <PrivateRoute exact path='/profile' component={ProfilePage} />
 
           <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
