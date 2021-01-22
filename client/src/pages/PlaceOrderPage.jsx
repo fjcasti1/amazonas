@@ -18,10 +18,14 @@ const PlaceOrderPage = ({ history }) => {
 
   const { loading, success, error, order } = useSelector((state) => state.orderCreate);
 
-  cart.itemsPrice = cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0);
-  cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 10;
-  cart.taxPrice = 0.15 * cart.itemsPrice;
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+  cart.itemsPrice = Number(
+    cartItems.reduce((acc, curr) => acc + curr.qty * curr.price, 0).toFixed(2),
+  );
+  cart.shippingPrice = Number((cart.itemsPrice > 100 ? 0 : 10).toFixed(2));
+  cart.taxPrice = Number((0.15 * cart.itemsPrice).toFixed(2));
+  cart.totalPrice = Number(
+    (cart.itemsPrice + cart.shippingPrice + cart.taxPrice).toFixed(2),
+  );
 
   const placeOrderHandler = () => {
     const order = { ...cart, orderItems: cartItems };
@@ -97,19 +101,19 @@ const PlaceOrderPage = ({ history }) => {
               <li>
                 <div className='row'>
                   <div>Items</div>
-                  <div>${cart.itemsPrice.toFixed(2)}</div>
+                  <div>${cart.itemsPrice}</div>
                 </div>
               </li>
               <li>
                 <div className='row'>
                   <div>Shipping</div>
-                  <div>${cart.shippingPrice.toFixed(2)}</div>
+                  <div>${cart.shippingPrice}</div>
                 </div>
               </li>
               <li>
                 <div className='row'>
                   <div>Tax</div>
-                  <div>${cart.taxPrice.toFixed(2)}</div>
+                  <div>${cart.taxPrice}</div>
                 </div>
               </li>
               <li>
@@ -118,7 +122,7 @@ const PlaceOrderPage = ({ history }) => {
                     <strong>Order Total</strong>
                   </div>
                   <div>
-                    <strong>${cart.totalPrice.toFixed(2)}</strong>
+                    <strong>${cart.totalPrice}</strong>
                   </div>
                 </div>
               </li>
