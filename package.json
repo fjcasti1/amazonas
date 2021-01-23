@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/fjcasti1/amazonas#readme",
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.2.0",
+    "@stripe/stripe-js": "^1.11.0",
     "aws-sdk": "^2.828.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.0",

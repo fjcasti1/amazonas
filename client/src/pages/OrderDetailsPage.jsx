@@ -8,7 +8,6 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import { deliverOrder, getOrderDetails, payOrder } from '../actions/orderActions';
 import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js';
-import CardSection from '../components/CardSection';
 
 const cardStyle = {
   hidePostalCode: true,
@@ -120,6 +119,7 @@ const OrderDetailsPage = ({ match }) => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     setProcessing(true);
+
     const payload = await stripe.confirmCardPayment(clientSecret, {
       receipt_email: userInfo.email,
       payment_method: {
