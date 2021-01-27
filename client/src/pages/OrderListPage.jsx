@@ -4,6 +4,7 @@ import Spinner from '../components/Spinner';
 import Alert from '../components/Alert';
 import { deleteOrder, listOrders } from '../actions/orderActions';
 import { ORDER_DELETE_RESET } from '../constants/orderConstants';
+import Moment from 'react-moment';
 
 const OrderListPage = ({ history, match }) => {
   const sellerMode = match.path.indexOf('/seller') >= 0;
@@ -32,7 +33,7 @@ const OrderListPage = ({ history, match }) => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <h1>Orders</h1>
       {errorDelete && <Alert>{errorDelete}</Alert>}
       {loading || loadingDelete ? (
@@ -47,7 +48,6 @@ const OrderListPage = ({ history, match }) => {
               <th>USER</th>
               <th>DATE</th>
               <th>TOTAL</th>
-              <th>PAID</th>
               <th>DELIVERED</th>
               <th>ACTIONS</th>
             </tr>
@@ -57,10 +57,21 @@ const OrderListPage = ({ history, match }) => {
               <tr key={order._id}>
                 <td>{order._id}</td>
                 <td>{order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>${order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}</td>
+                <td>
+                  <Moment element='span' format='MMM DD, YYYY' date={order.createdAt} />
+                </td>
+                <td>$ {order.price.total}</td>
+                <td>
+                  {order.isDelivered ? (
+                    <Moment
+                      element='span'
+                      format='MMM DD, YYYY'
+                      date={order.deliveredAt}
+                    />
+                  ) : (
+                    'No'
+                  )}
+                </td>
                 <td>
                   <button
                     type='button'

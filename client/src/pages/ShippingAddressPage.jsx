@@ -10,7 +10,8 @@ const ShippingAddressPage = ({ history }) => {
 
   const shippingAddress = useSelector((state) => state.cart.shippingAddress);
 
-  const [fullName, setFullName] = useState(shippingAddress.fullName);
+  const [firstName, setFirstName] = useState(shippingAddress.firstName);
+  const [lastName, setLastName] = useState(shippingAddress.lastName);
   const [address, setAddress] = useState(shippingAddress.address);
   const [city, setCity] = useState(shippingAddress.city);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
@@ -18,8 +19,10 @@ const ShippingAddressPage = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(saveShippingAddress({ fullName, address, city, postalCode, country }));
-    history.push('/payment');
+    dispatch(
+      saveShippingAddress({ firstName, lastName, address, city, postalCode, country }),
+    );
+    history.push('/checkout');
   };
 
   return (
@@ -30,13 +33,24 @@ const ShippingAddressPage = ({ history }) => {
           <h1>Shipping Address</h1>
         </div>
         <div>
-          <label htmlFor='fullName'>Full Name</label>
+          <label htmlFor='firstName'>First Name</label>
           <input
             type='text'
-            id='fullName'
-            placeholder='Enter full name'
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            id='firstName'
+            placeholder='Enter first name'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor='lastName'>Last Name</label>
+          <input
+            type='text'
+            id='lastName'
+            placeholder='Enter last name'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             required
           />
         </div>

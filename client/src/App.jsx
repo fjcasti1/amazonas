@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
 import CartPage from './pages/CartPage';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
-import PaymentMethodPage from './pages/PaymentMethodPage';
-import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import OrderHistory from './pages/OrderHistory';
 import ProfilePage from './pages/ProfilePage';
@@ -27,6 +27,14 @@ import { listCategories } from './actions/productActions';
 import SideBar from './components/SideBar';
 import SearchPage from './pages/SearchPage';
 import SellerOrAdminRoute from './components/SellerOrAdminRoute';
+import CheckoutPage from './pages/CheckoutPage';
+
+// Make sure to call loadStripe outside of a component’s render to avoid
+// recreating the Stripe object on every render.
+// loadStripe is initialized with your real test publishable API key.
+const stripePromise = loadStripe(
+  'pk_test_51IC6dhBn3WNbd6XSJAQGZaxqK7F8YoK5Dd8mdBE86rdSEEaNaUyonDQqfnFbZ1DLK0hmtC32dNrXsCkB8wEMNqaP00Gsw8MnMh',
+);
 
 const App = () => {
   const dispatch = useDispatch();
@@ -50,8 +58,9 @@ const App = () => {
           <GuestRoute exact path='/register' component={RegisterPage} />
 
           <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
-          <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
-          <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
+          <Elements stripe={stripePromise}>
+            <PrivateRoute exact path='/checkout' component={CheckoutPage} />
+          </Elements>
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
           <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
