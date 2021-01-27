@@ -9,7 +9,6 @@ import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
-import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import OrderHistory from './pages/OrderHistory';
 import ProfilePage from './pages/ProfilePage';
@@ -62,7 +61,6 @@ const App = () => {
           <Elements stripe={stripePromise}>
             <PrivateRoute exact path='/checkout' component={CheckoutPage} />
           </Elements>
-          <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
           <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
