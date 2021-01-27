@@ -9,6 +9,7 @@ import { ORDER_CREATE_RESET } from '../constants/orderConstants';
 import { PayPalButton } from 'react-paypal-button-v2';
 import Spinner from '../components/Spinner';
 import Spacer from '../components/Spacer';
+import { getCode } from 'country-list';
 
 const cardStyle = {
   hidePostalCode: true,
@@ -33,7 +34,7 @@ const CheckoutPage = ({ history }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
-  const { cartItems, price } = cart;
+  const { cartItems, price, shippingAddress } = cart;
   const userInfo = useSelector((state) => state.userAuth.userInfo);
 
   const {
@@ -102,6 +103,7 @@ const CheckoutPage = ({ history }) => {
           `/api/payments/create-payment-intent`,
           {
             amount: price.total * 100, // Stripe calculates amounts in the lowest denomination
+            shippingAddress,
           },
           config,
         );
@@ -153,10 +155,14 @@ const CheckoutPage = ({ history }) => {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
+          // Billing addres is the same as shipping for now
           address: {
-            city: 'San Diego',
-            // country: country,
-            postal_code: '94110',
+            city: shippingAddress.city,
+            country:
+              shippingAddress.country === 'United States'
+                ? getCode('United States of America')
+                : getCode(shippingAddress.country),
+            postal_code: shippingAddress.postalCode,
           },
         },
       },

@@ -24,7 +24,7 @@ const HomePage = ({ history }) => {
 
   return (
     <Fragment>
-      <h2>Top Sellers</h2>
+      <h2 className='container'>Top Sellers</h2>
       {loadingSellers ? (
         <Spinner />
       ) : errorSellers ? (
@@ -38,20 +38,22 @@ const HomePage = ({ history }) => {
           ))}
         </Carousel>
       )}
-      <h2>Featured Products</h2>
-      {loading ? (
-        <Spinner />
-      ) : error ? (
-        <Alert>{error}</Alert>
-      ) : products.length === 0 ? (
-        <Alert variant='info'>No Sellers Found</Alert>
-      ) : (
-        <div className='row center'>
-          {products.map((product) => (
-            <Product key={product._id} product={product} />
-          ))}
-        </div>
-      )}
+      <div className='container'>
+        <h2>Featured Products</h2>
+        {loading ? (
+          <Spinner />
+        ) : error ? (
+          <Alert>{error}</Alert>
+        ) : products.length === 0 ? (
+          <Alert variant='info'>No Sellers Found</Alert>
+        ) : (
+          <div className='row center'>
+            {products.map((product) => (
+              <Product key={product._id} product={product} />
+            ))}
+          </div>
+        )}
+      </div>
     </Fragment>
   );
 };
