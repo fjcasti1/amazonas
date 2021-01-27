@@ -9,7 +9,6 @@ import ProductPage from './pages/ProductPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
-import PaymentMethodPage from './pages/PaymentMethodPage';
 import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderDetailsPage from './pages/OrderDetailsPage';
 import OrderHistory from './pages/OrderHistory';
@@ -29,6 +28,7 @@ import { listCategories } from './actions/productActions';
 import SideBar from './components/SideBar';
 import SearchPage from './pages/SearchPage';
 import SellerOrAdminRoute from './components/SellerOrAdminRoute';
+import CheckoutPage from './pages/CheckoutPage';
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -59,12 +59,12 @@ const App = () => {
           <GuestRoute exact path='/register' component={RegisterPage} />
 
           <PrivateRoute exact path='/shipping' component={ShippingAddressPage} />
-          <PrivateRoute exact path='/payment' component={PaymentMethodPage} />
+          <Elements stripe={stripePromise}>
+            <PrivateRoute exact path='/checkout' component={CheckoutPage} />
+          </Elements>
           <PrivateRoute exact path='/placeorder' component={PlaceOrderPage} />
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
-          <Elements stripe={stripePromise}>
-            <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
-          </Elements>
+          <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
 
           <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
