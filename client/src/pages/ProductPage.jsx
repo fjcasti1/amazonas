@@ -57,14 +57,16 @@ const ProductPage = ({ history, match }) => {
     }
   };
   return (
-    <Fragment>
+    <div className='container'>
       {loading ? (
         <Spinner />
       ) : error ? (
         <Alert>{error}</Alert>
       ) : (
         <div>
-          <Link to='/'>Go Back</Link>
+          <button type='button'>
+            <Link to='/'>Go Back</Link>
+          </button>
           <div className='row top'>
             <div className='col-2'>
               <img className='large' src={product.image} alt={product.name} />
@@ -218,7 +220,7 @@ const ProductPage = ({ history, match }) => {
           )}
         </div>
       )}
-    </Fragment>
+    </div>
   );
 };
 
