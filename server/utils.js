@@ -11,7 +11,7 @@ export const generateToken = ({ _id, name, email, isAdmin, isSeller }) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '30m',
+      expiresIn: '30d',
     },
   );
 };
