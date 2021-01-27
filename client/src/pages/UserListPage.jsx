@@ -33,7 +33,7 @@ const UserListPage = ({ history }) => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <div className='row'>
         <h1>Users</h1>
       </div>

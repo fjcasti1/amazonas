@@ -55,7 +55,7 @@ const ProductListPage = ({ match, history }) => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <div className='row'>
         <h1>Products</h1>
         <button className='primary' onClick={() => dispatch(createProduct())}>
@@ -86,7 +86,7 @@ const ProductListPage = ({ match, history }) => {
               <tr key={product._id}>
                 <td>{product._id}</td>
                 <td>{product.name}</td>
-                <td>${product.price}</td>
+                <td>$ {product.price}</td>
                 <td>{product.category}</td>
                 <td>{product.brand}</td>
                 <td>
