@@ -102,10 +102,6 @@ button {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-button a {
-  text-decoration: none;
-  color: black;
-}
 
 button:not([disabled]) {
   background-color: var(--light-gray);

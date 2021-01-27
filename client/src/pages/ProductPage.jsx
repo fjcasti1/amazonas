@@ -64,8 +64,8 @@ const ProductPage = ({ history, match }) => {
         <Alert>{error}</Alert>
       ) : (
         <div>
-          <button type='button'>
-            <Link to='/'>Go Back</Link>
+          <button type='button' onClick={() => history.push('/')}>
+            Go Back
           </button>
           <div className='row top'>
             <div className='col-2'>
