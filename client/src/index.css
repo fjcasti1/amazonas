@@ -35,6 +35,9 @@ body {
 }
 
 /* Layout */
+.container {
+  padding: 0 6rem;
+}
 .grid-container {
   height: 100%;
   display: grid;
@@ -195,6 +198,9 @@ button.close-sidebar:focus {
   justify-content: space-between;
   align-items: center;
 }
+.row.center {
+  justify-content: center !important;
+}
 .row.start {
   justify-content: flex-start;
 }
@@ -216,6 +222,9 @@ button.close-sidebar:focus {
 .col-3 {
   flex: 32 1 75rem;
 }
+.col-center {
+  justify-self: center !important;
+}
 .min-30 {
   min-width: 30rem;
 }
@@ -233,7 +242,7 @@ img {
   border-radius: 0.5rem;
 }
 img.small {
-  max-width: 30rem;
+  max-width: 10rem;
   width: 90%;
 }
 img.medium {
@@ -258,9 +267,33 @@ img.large {
 .card-body > * {
   margin-bottom: 0.5rem;
 }
-
+.card-sm {
+  width: 50rem;
+}
 .price {
   font-size: 2rem;
+}
+/* Spacer */
+.spacer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.spacer-hr {
+  margin: 0;
+  height: 1px;
+  border: none;
+  background-color: rgb(225, 225, 225);
+  flex: 1 1 0;
+}
+.spacer-text {
+  font-size: 1.5rem;
+  margin: 0.5rem;
+  border: none;
+}
+.text-muted {
+  color: #687075 !important;
 }
 
 /* Rating */
@@ -339,6 +372,7 @@ img.large {
 
 /* Checkout Steps */
 .checkout-steps > div {
+  text-align: center;
   border-top: 0.3rem var(--gray) solid;
   color: var(--gray);
   flex: 1;
@@ -391,6 +425,17 @@ img.large {
   font-weight: bold;
 }
 
+/* Order page */
+.order-title {
+  margin: 0 1rem;
+}
+.order-title > h1 {
+  font-size: 2.5rem;
+}
+.order-payment-method {
+  text-transform: capitalize;
+}
+
 /* Filter Menu (Search Page) */
 
 /* .filter-menu { } */
@@ -430,11 +475,7 @@ li.filter-option {
 .result-message {
   line-height: 22px;
   font-size: 16px;
-}
-.result-message a {
-  color: rgb(89, 111, 214);
-  font-weight: 600;
-  text-decoration: none;
+  color: red;
 }
 .hidden {
   display: none;
@@ -460,9 +501,8 @@ li.filter-option {
 }
 
 button#creditButton {
-  background: #5469d4;
+  background-color: var(--gold);
   font-family: Arial, sans-serif;
-  color: #ffffff;
   border-radius: 0 0 4px 4px;
   border: 0;
   padding: 12px 16px;
@@ -474,11 +514,12 @@ button#creditButton {
   box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
   width: 100%;
 }
-button#creditButton:hover {
+button#creditButton:not([disabled]):hover {
+  border: 0.1rem var(--dark-gray) solid;
   filter: contrast(115%);
 }
 button#creditButton:disabled {
-  opacity: 0.5;
+  opacity: 0.9;
   cursor: default;
 }
 
@@ -490,7 +531,7 @@ button#creditButton:disabled {
 }
 
 .spinner-payment {
-  color: #ffffff;
+  color: var(--dark-blue);
   font-size: 22px;
   text-indent: -99999px;
   margin: 0px auto;
@@ -512,7 +553,7 @@ button#creditButton:disabled {
 .spinner-payment:before {
   width: 10.4px;
   height: 20.4px;
-  background: #5469d4;
+  background-color: var(--gold);
   border-radius: 20.4px 0 0 20.4px;
   top: -0.2px;
   left: -0.2px;
@@ -525,7 +566,7 @@ button#creditButton:disabled {
 .spinner-payment:after {
   width: 10.4px;
   height: 10.2px;
-  background: #5469d4;
+  background-color: var(--gold);
   border-radius: 0 10.2px 10.2px 0;
   top: -0.1px;
   left: 10.2px;
