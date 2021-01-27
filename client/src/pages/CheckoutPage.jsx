@@ -199,8 +199,8 @@ const CheckoutPage = ({ history }) => {
   return (
     <Fragment>
       <CheckoutSteps step1 step2 step3 />
+      {!loadingCreate && errorCreate && <Alert>{errorCreate}</Alert>}
       <div className='row center'>
-        {!loadingCreate && errorCreate && <Alert>{errorCreate}</Alert>}
         <div className='card card-sm'>
           <div className='card-body'>
             <ul>
