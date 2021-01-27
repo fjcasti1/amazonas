@@ -8,6 +8,7 @@ import userRouter from './routes/userRoutes.js';
 import orderRouter from './routes/orderRoutes.js';
 import path from 'path';
 import morganMiddleware from './middleware/morganMiddleware.js';
+import paymentRouter from './routes/paymentRoutes.js';
 
 const app = express();
 app.use(express.json());
@@ -31,6 +32,7 @@ app.use('/api/database', databaseRouter);
 app.use('/api/products', productRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
+app.use('/api/payments', paymentRouter);
 app.get('/api/config/paypal', (req, res) => res.send(process.env.PAYPAL_CLIENT_ID));
 
 const __dirname = path.resolve();
