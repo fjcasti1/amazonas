@@ -15,20 +15,33 @@ paymentRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const { amount, shippingAddress } = req.body;
-    const { firstName, lastName, address, city, postalCode, country } = shippingAddress;
+    const {
+      firstName,
+      lastName,
+      line1,
+      line2,
+      city,
+      state,
+      postalCode,
+      country,
+    } = shippingAddress;
+
+    const address = {};
+    if (line1) address.line1 = line1;
+    if (line2) address.line2 = line2;
+    if (city) address.city = city;
+    if (state) address.state = state;
+    if (postalCode) address.postal_code = postalCode;
+    if (country) address.country = country;
+
+    console.log(address);
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
       currency: 'usd',
       shipping: {
         name: firstName + ' ' + lastName,
-        address: {
-          line1: address,
-          city: city,
-          postal_code: postalCode,
-          // state:,
-          country: country,
-        },
+        address,
       },
       // // Verify your integration in this guide by including this parameter
       // metadata: { integration_check: 'accept_a_payment' },
