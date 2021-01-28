@@ -14,6 +14,11 @@ orderRouter.post(
   expressAsyncHandler(async (req, res) => {
     const { orderItems, shippingAddress, paymentMethod, price } = req.body;
 
+    const sellers = [];
+    orderItems.forEach((item) => {
+      sellers.push(item.seller._id);
+    });
+
     if (orderItems.length === 0) {
       res.status(400).send({ message: 'Cart is empty' });
     } else {
@@ -25,6 +30,7 @@ orderRouter.post(
         isPaid: true,
         paidAt: Date.now(),
         user: req.user._id, // Logged in user
+        sellers,
       });
 
       const createdOrder = await newOrder.save();
@@ -70,6 +76,16 @@ orderRouter.get(
       .populate('user', 'name')
       .sort({ _id: -1 }); // Sorted by newwet arrivals by default
 
+    if (orders && seller) {
+      let filteredItems = {};
+      orders.forEach((order) => {
+        filteredItems = order.orderItems.filter(
+          (item) => item.seller.toString() === seller,
+        );
+        order.orderItems = filteredItems;
+      });
+    }
+
     if (orders) {
       res.send(orders);
     } else {
@@ -85,9 +101,18 @@ orderRouter.get(
   '/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
+    const seller = req.query.seller;
     const orderId = req.params.id;
 
     const order = await Order.findById(orderId);
+
+    if (order && seller) {
+      let filteredItems = {};
+      filteredItems = order.orderItems.filter(
+        (item) => item.seller.toString() === seller,
+      );
+      order.orderItems = filteredItems;
+    }
 
     if (order) {
       res.send(order);
