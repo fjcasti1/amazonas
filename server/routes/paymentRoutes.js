@@ -34,7 +34,6 @@ paymentRouter.post(
     if (postalCode) address.postal_code = postalCode;
     if (country) address.country = country;
 
-    console.log(address);
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount,
