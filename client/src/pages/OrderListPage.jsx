@@ -24,7 +24,16 @@ const OrderListPage = ({ history, match }) => {
     } else {
       dispatch(listOrders({ seller: sellerMode ? userId : '' }));
     }
-  }, [dispatch, sellerMode, successDelete, userId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, successDelete, userId]);
+
+  const detailsHandler = (orderId) => {
+    if (sellerMode) {
+      history.push(`/orders/${orderId}/seller`);
+    } else {
+      history.push(`/orders/${orderId}`);
+    }
+  };
 
   const deleteHandler = (orderId) => {
     if (window.confirm('Are you sure?')) {
@@ -76,7 +85,7 @@ const OrderListPage = ({ history, match }) => {
                   <button
                     type='button'
                     className='small'
-                    onClick={() => history.push(`/orders/${order._id}`)}
+                    onClick={() => detailsHandler(order._id)}
                   >
                     Details
                   </button>
