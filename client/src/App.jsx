@@ -63,6 +63,7 @@ const App = () => {
           </Elements>
           <PrivateRoute exact path='/orderhistory' component={OrderHistory} />
           <PrivateRoute exact path='/orders/:id' component={OrderDetailsPage} />
+          <PrivateRoute exact path='/orders/:id/seller' component={OrderDetailsPage} />
           <PrivateRoute exact path='/profile' component={ProfilePage} />
 
           <SellerRoute exact path='/productlist/seller' component={ProductListPage} />
