@@ -119,8 +119,9 @@ const CheckoutPage = ({ history }) => {
   useEffect(() => {
     if (paymentSucceeded) {
       const order = {
-        ...cart,
         orderItems: cartItems,
+        price,
+        shippingAddress,
         paymentMethod: {
           option: paymentOption,
           card_network: cardBrand,

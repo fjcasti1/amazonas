@@ -5,10 +5,17 @@ import { Link } from 'react-router-dom';
 import Alert from '../components/Alert';
 import Spinner from '../components/Spinner';
 import { deliverOrder, getOrderDetails } from '../actions/orderActions';
-import { ORDER_DELIVER_RESET, ORDER_PAY_RESET } from '../constants/orderConstants';
+import {
+  ORDER_DELIVER_RESET,
+  ORDER_PAY_RESET,
+  ORDER_DETAILS_RESET,
+} from '../constants/orderConstants';
 
 const OrderDetailsPage = ({ match }) => {
+  const sellerMode = match.path.indexOf('/seller') >= 0;
   const dispatch = useDispatch();
+
+  const userId = useSelector((state) => state.userAuth.userInfo._id);
 
   const { loading, error, order } = useSelector((state) => state.orderDetails);
   const {
@@ -24,11 +31,13 @@ const OrderDetailsPage = ({ match }) => {
     if (!order || order._id !== orderId || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
       dispatch({ type: ORDER_DELIVER_RESET });
-      dispatch(getOrderDetails(orderId));
+      dispatch(getOrderDetails(orderId, { seller: sellerMode ? userId : '' }));
     }
+    return () => {
+      if (order) dispatch({ type: ORDER_DETAILS_RESET });
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, orderId, order, successDeliver]);
-
+  }, [dispatch, orderId, order, successDeliver, userId]);
   return loading ? (
     <Spinner />
   ) : error ? (
@@ -114,56 +123,58 @@ const OrderDetailsPage = ({ match }) => {
               ) : (
                 <Alert>Not paid</Alert>
               )}
-              <ul>
-                <li>
-                  <h2>Order Summary</h2>
-                </li>
-                <li>
-                  <div className='row'>
-                    <div>Items</div>
-                    <div>$ {order.price.items}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className='row'>
-                    <div>Shipping</div>
-                    <div>$ {order.price.shipping}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className='row'>
-                    <div>Tax</div>
-                    <div>$ {order.price.tax}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className='row'>
-                    <div>
-                      <strong>Order Total</strong>
-                    </div>
-                    <div>
-                      <strong>$ {order.price.total}</strong>
-                    </div>
-                  </div>
-                </li>
-                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+              {!sellerMode && (
+                <ul>
                   <li>
-                    {loadingDeliver ? (
-                      <Spinner />
-                    ) : (
-                      <Fragment>
-                        {errorDeliver && <Alert>{errorDeliver}</Alert>}
-                        <button
-                          className='primary block'
-                          onClick={() => dispatch(deliverOrder(order._id))}
-                        >
-                          Deliver Order
-                        </button>
-                      </Fragment>
-                    )}
+                    <h2>Order Summary</h2>
                   </li>
-                )}
-              </ul>
+                  <li>
+                    <div className='row'>
+                      <div>Items</div>
+                      <div>$ {order.price.items}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='row'>
+                      <div>Shipping</div>
+                      <div>$ {order.price.shipping}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='row'>
+                      <div>Tax</div>
+                      <div>$ {order.price.tax}</div>
+                    </div>
+                  </li>
+                  <li>
+                    <div className='row'>
+                      <div>
+                        <strong>Order Total</strong>
+                      </div>
+                      <div>
+                        <strong>$ {order.price.total}</strong>
+                      </div>
+                    </div>
+                  </li>
+                  {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                    <li>
+                      {loadingDeliver ? (
+                        <Spinner />
+                      ) : (
+                        <Fragment>
+                          {errorDeliver && <Alert>{errorDeliver}</Alert>}
+                          <button
+                            className='primary block'
+                            onClick={() => dispatch(deliverOrder(order._id))}
+                          >
+                            Deliver Order
+                          </button>
+                        </Fragment>
+                      )}
+                    </li>
+                  )}
+                </ul>
+              )}
             </div>
           </div>
         </div>
