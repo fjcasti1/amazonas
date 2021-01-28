@@ -41,12 +41,6 @@ const orderSchema = new mongoose.Schema(
       card_network: { type: String },
       card_last4: { type: Number },
     },
-    // paymentResult: {
-    //   id: { type: String },
-    //   status: { type: String },
-    //   update_time: { type: String },
-    //   email_address: { type: String },
-    // },
     price: {
       items: { type: Number, required: true },
       shipping: { type: Number, required: true },
