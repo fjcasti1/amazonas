@@ -7,7 +7,7 @@ const paymentRouter = express.Router();
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-// @route     POST api/orders/create-payment-intent
+// @route     POST api/payments/create-payment-intent
 // @desc      Create payment intent for stripe
 // @access    Private
 paymentRouter.post(
@@ -35,19 +35,23 @@ paymentRouter.post(
     if (country) address.country = country;
 
     // Create a PaymentIntent with the order amount and currency
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: 'usd',
-      shipping: {
-        name: firstName + ' ' + lastName,
-        address,
-      },
-      // // Verify your integration in this guide by including this parameter
-      // metadata: { integration_check: 'accept_a_payment' },
-    });
-    res.send({
-      clientSecret: paymentIntent.client_secret,
-    });
+    try {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: amount,
+        currency: 'usd',
+        shipping: {
+          name: firstName + ' ' + lastName,
+          address,
+        },
+        // Verify your integration in this guide by including this parameter
+        // metadata: { integration_check: 'accept_a_payment' },
+      });
+      res.send({
+        clientSecret: paymentIntent.client_secret,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }),
 );
 
