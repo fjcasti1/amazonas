@@ -33,7 +33,7 @@ import CheckoutPage from './pages/CheckoutPage';
 // recreating the Stripe object on every render.
 // loadStripe is initialized with your real test publishable API key.
 const stripePromise = loadStripe(
-  'pk_test_51IC6dhBn3WNbd6XSJAQGZaxqK7F8YoK5Dd8mdBE86rdSEEaNaUyonDQqfnFbZ1DLK0hmtC32dNrXsCkB8wEMNqaP00Gsw8MnMh',
+  'pk_test_51ILbFnI8EWaUCIqJGHnChfLq2puLY2sBRrxGr34LWsKrHnCq1SUHM8OeG8AHM0PCeTEMyLOPqynjPH3bqWpKSHJA00Yy63693A',
 );
 
 const App = () => {
